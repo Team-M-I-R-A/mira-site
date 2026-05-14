@@ -1,0 +1,72 @@
+{
+    "app": {
+        "name": "MIRA",
+        "fondateur": "Alex Jonathan NGASSAKI",
+        "description": "L'application permet de trouver des logements facilement (location courte et longue durée)",
+        "fonctionnalités": [
+            "Recherche de logements",
+            "Reservation d'un logements",
+            "Publication d'un logements par les proptiétaires",
+            "Paiement mobile intégré"
+        ]
+    },
+    "faq": [
+        {
+            "question": "Que Signifie MIRA ?",
+            "reponse": "Un peu de patience, vous le saurez très bientôt"
+        },
+        {
+            "question": "Comment réserver un logement ?",
+            "reponse": "L'utilisateur pourra consulter les logements, choisir une offre et suivre un processus de réservation simple dans l'application."
+        },
+        {
+            "question": "Comment se passe le remboursement ?",
+            "reponse": "Le client est remboursé en totalité s'il éffectue sa demande de remboursement dans un delai de 24h après paiement."
+        },
+        {
+            "question": "Quels logements sont disponibles ?",
+            "reponse": "Les logements ne sont pas encore disponibles à la consultation publique pour le moment 🏠. Ils seront accessibles dès le lancement de l'application. 🚀"
+        },
+        {
+            "question": "Quels moyens de paiement sont acceptés ?",
+            "reponse": "Le paiement se fera via Mobile Money 📱."
+        },
+        {
+            "question": "L'application est-elle gratuite ?",
+            "reponse": "Oui, l'utilisation de l'application est gratuite pour les utilisateurs."
+        },
+        {
+            "question": "Qui est le fondateur de l'application ?",
+            "reponse": "Le fondateur de l'application est Alex Jonathan NGASSAKI, un jeune étudiant en Mathématiques-Informatique."
+        },
+        {
+            "question": "Parle-moi du fondateur de l'application",
+            "reponse": "Le fondateur est Alex Jonathan NGASSAKI, un jeune étudiant en Mathématiques-Informatique passionné par le développement logiciel et les solutions numériques pour faciliter la vie quotidienne au Congo."
+        },
+        {
+            "question": "Dans quelle université étudie le fondateur de l'application ?",
+            "reponse": "Le fondateur étudie à l'université Denis SASSOU N'GUESSO au Congo-Brazzaville."
+        },
+        {
+            "question": "Quel est le but de l'application ?",
+            "reponse": "Le but est de faciliter la recherche de logements fiables et accessibles au Congo."
+        },
+        {
+            "question": "Est-ce que l'application est déjà disponible ?",
+            "reponse": "Pas encore, mais le lancement est prévu très bientôt 🚀."
+        },
+        {
+            "question": "Quand l'application sera-t-elle disponible ?",
+            "reponse": "L'application sera disponible très bientôt. Le lancement officiel est prévu prochainement au Congo."
+        },
+        {
+            "question": "Puis-je être notifié du lancement ?",
+            "reponse": "Oui, vous pourrez laisser vos coordonnées pour être informé dès la sortie."
+        },
+        {
+            "question": "Pourquoi cette application a été créée ?",
+            "reponse": "Pour résoudre les difficultés de recherche de logements fiables et simplifier le processus de location au Congo."
+        }
+    ]
+
+}
