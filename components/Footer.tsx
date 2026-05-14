@@ -1,4 +1,4 @@
-import { MapPin, Mail, Phone, Linkedin } from 'lucide-react'
+import { MapPin, Mail, Phone } from 'lucide-react'
 import Image from 'next/image'
 
 const footerLinks = {

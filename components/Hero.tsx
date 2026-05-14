@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { ArrowDown, MapPin, Star } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { ArrowDown, Star } from 'lucide-react'
 import PhoneMockup from './PhoneMockup'
 
 export default function Hero() {
