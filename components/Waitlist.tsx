@@ -30,6 +30,11 @@ export default function Waitlist() {
     setSubmitted(true)
   }
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^0-9+]/g, '')
+    setPhone(value)
+  }
+
   return (
     <section id="waitlist" ref={sectionRef as React.RefObject<HTMLElement>} className="relative py-32 overflow-hidden">
       {/* Background */}
@@ -117,8 +122,8 @@ export default function Waitlist() {
                     <input
                       type="tel"
                       value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      placeholder="+242 06 XXX XX XX"
+                      onChange={handleChange}
+                      placeholder="06 XXX XX XX"
                       className="w-full bg-white/3 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-dark-600 focus:outline-none focus:border-[#00E5FF] focus:bg-white/5 transition-all duration-200 font-body"
                     />
                   </div>

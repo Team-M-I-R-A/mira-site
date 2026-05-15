@@ -9,9 +9,8 @@ const footerLinks = {
 }
 
 const reseaux = {
-  Twiter: "https://x.com",
-  Facebook: "https://facebook.com",
-  Instagram: "https://instagram.com",
+  TikTok: "https://www.tiktok.com/@mira.site.cg",
+  Instagram: "https://www.instagram.com/mira.site.cg",
   Linkedin: "https://linkedin",
   WhatsApp: "https://whatsApp.com"
 }
@@ -87,6 +86,8 @@ export default function Footer() {
               <a
                 key={social}
                 href={link}
+                target='_blank'
+                rel='noopener noreferrer'
                 className="text-dark-600 hover:text-[#00E5FF] text-xs font-body transition-colors duration-200"
               >
                 {social}
