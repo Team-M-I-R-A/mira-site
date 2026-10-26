@@ -1,19 +1,25 @@
-import { MapPin, Mail, Phone } from 'lucide-react'
-import Image from 'next/image'
+import { MapPin, Mail, Phone } from "lucide-react";
+import Image from "next/image";
 
 const footerLinks = {
-  Produit: ['Fonctionnalités', 'Comment ça marche', 'Sécurité', 'Mobile Money'],
-  Entreprise: ['À propos', 'Blog', 'Carrières', 'Presse', 'Partenaires'],
-  Support: ['Centre d\'aide', 'Nous contacter', 'Signaler un problème', 'Politique de confidentialité', 'CGU'],
-  Villes: ['Brazzaville', 'Pointe-Noire'],
-}
+  Produit: ["Fonctionnalités", "Comment ça marche", "Sécurité", "Mobile Money"],
+  Entreprise: ["À propos", "Partenaires"],
+  Support: [
+    "Centre d'aide",
+    "Nous contacter",
+    "Signaler un problème",
+    "Politique de confidentialité",
+    "CGU",
+  ],
+  Villes: ["Brazzaville", "Pointe-Noire"],
+};
 
 const reseaux = {
   TikTok: "https://www.tiktok.com/@mira.site.cg",
   Instagram: "https://www.instagram.com/mira.site.cg",
   Linkedin: "https://linkedin",
-  WhatsApp: "https://whatsApp.com"
-}
+  WhatsApp: "https://whatsApp.com",
+};
 
 export default function Footer() {
   return (
@@ -28,18 +34,20 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-4">
-              <Image
-                src="/logo.png"
-                alt=""
-                width={60}
-                height={60}
-              />
+              <Image src="/logo.png" alt="" width={60} height={60} />
               <a href="#hero" className="">
-                <Image src="/name.png" alt="" width={86} height={86} />
+                <Image
+                  src="/name.png"
+                  alt=""
+                  width={86}
+                  height={86}
+                  className="theme-invert"
+                />
               </a>
             </div>
             <p className="text-dark-400 text-sm font-body leading-relaxed mb-6">
-              La plateforme de location immobilière adaptée aux réalités congolaises.
+              La plateforme de location immobilière adaptée aux réalités
+              congolaises.
             </p>
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-dark-500 text-xs">
@@ -48,7 +56,12 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2 text-dark-500 text-xs">
                 <Mail size={12} />
-                <a href="mailto:ngassakialex20@gmail.com" className="hover:text-[#00E5FF] transition-colors">ngassakialex20@gmail.com</a>
+                <a
+                  href="mailto:ngassakialex20@gmail.com"
+                  className="hover:text-[#00E5FF] transition-colors"
+                >
+                  ngassakialex20@gmail.com
+                </a>
               </div>
               <div className="flex items-center gap-2 text-dark-500 text-xs">
                 <Phone size={12} />
@@ -60,13 +73,13 @@ export default function Footer() {
           {/* Links */}
           {Object.entries(footerLinks).map(([category, links]) => (
             <div key={category}>
-              <h4 className="text-white text-sm font-medium mb-4 font-display">{category}</h4>
+              <h4 className="text-white text-sm font-medium mb-4 font-display">
+                {category}
+              </h4>
               <ul className="space-y-2.5">
                 {links.map((link) => (
                   <li key={link}>
-                    <p
-                      className="text-dark-500 hover:text-dark-200 text-sm font-body transition-colors duration-200"
-                    >
+                    <p className="text-dark-500 hover:text-dark-200 text-sm font-body transition-colors duration-200">
                       {link}
                     </p>
                   </li>
@@ -86,8 +99,8 @@ export default function Footer() {
               <a
                 key={social}
                 href={link}
-                target='_blank'
-                rel='noopener noreferrer'
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-dark-600 hover:text-[#00E5FF] text-xs font-body transition-colors duration-200"
               >
                 {social}
@@ -97,5 +110,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

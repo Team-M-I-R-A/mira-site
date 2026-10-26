@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Menu, X } from 'lucide-react'
 import Image from 'next/image'
+import ThemeToggle from './ThemeToggle'
 
 const navLinks = [
   { label: 'Fonctionnalités', href: '#features' },
@@ -57,7 +58,7 @@ export default function Navbar() {
         {/* Logo */}
         <a href="#hero" className="flex items-center gap-3 group">
           <Image src="/logo.png" alt="" width={48} height={48} />
-          <Image src="/name.png" alt="" width={86} height={86} />
+          <Image src="/name.png" alt="" width={86} height={86} className="theme-invert" />
         </a>
 
         {/* Desktop nav */}
@@ -74,41 +75,42 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* CTA desktop */}
-        <div className="hidden md:flex items-center gap-4">
-          <a
-            href="#waitlist"
-            className="relative overflow-hidden px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#2233DD] via-[#1A6BFF] to-[#00E5FF] text-white text-sm font-medium shadow-glow hover:shadow-glow-lg transition-all duration-300 hover:-translate-y-0.5 group"
-          >
-            <span className="relative z-10">Rejoindre la liste d'attente</span>
-            <div className="absolute inset-0 shimmer-btn opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </a>
-        </div>
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
 
-        {/* Mobile toggle — Safari-safe */}
-        <button
-          type="button"
-          onClick={handleToggle}
-          onTouchEnd={handleToggle}
-          aria-label={open ? 'Fermer le menu' : 'Ouvrir le menu'}
-          aria-expanded={open}
-          style={{
-            WebkitTapHighlightColor: 'transparent',
-            touchAction: 'manipulation',
-            cursor: 'pointer',
-            minWidth: 44,
-            minHeight: 44,
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'none',
-            border: 'none',
-            padding: 0,
-            color: 'rgba(255,255,255,0.8)',
-          }}
-          className="md:hidden"
-        >
-          {open ? <X size={24} /> : <Menu size={24} />}
-        </button>
+          {/* CTA desktop */}
+          <div className="hidden md:flex items-center gap-4">
+            <a
+              href="#waitlist"
+              className="relative overflow-hidden px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#2233DD] via-[#1A6BFF] to-[#00E5FF] text-white text-sm font-medium shadow-glow hover:shadow-glow-lg transition-all duration-300 hover:-translate-y-0.5 group"
+            >
+              <span className="relative z-10">Rejoindre la liste d'attente</span>
+              <div className="absolute inset-0 shimmer-btn opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </a>
+          </div>
+
+          {/* Mobile toggle — Safari-safe */}
+          <button
+            type="button"
+            onClick={handleToggle}
+            onTouchEnd={handleToggle}
+            aria-label={open ? 'Fermer le menu' : 'Ouvrir le menu'}
+            aria-expanded={open}
+            style={{
+              WebkitTapHighlightColor: 'transparent',
+              touchAction: 'manipulation',
+              cursor: 'pointer',
+              minWidth: 44,
+              minHeight: 44,
+              background: 'none',
+              border: 'none',
+              padding: 0,
+            }}
+            className="md:hidden flex items-center justify-center text-dark-200"
+          >
+            {open ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}

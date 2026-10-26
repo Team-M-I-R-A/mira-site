@@ -161,7 +161,7 @@ function DetailScreen() {
 
 export default function PhoneMockup({ screen }: PhoneMockupProps) {
   return (
-    <div className="relative select-none">
+    <div className="phone-mockup relative select-none">
       {/* Phone frame */}
       <div
         className="relative w-[220px] h-[460px] rounded-[40px] overflow-hidden"
@@ -169,8 +169,8 @@ export default function PhoneMockup({ screen }: PhoneMockupProps) {
           background: 'linear-gradient(145deg, #2a2420, #1a1612)',
           boxShadow: `
             0 0 0 1px rgba(255,255,255,0.08),
-            0 30px 80px rgba(0,0,0,0.8),
-            0 0 60px rgba(249,115,22,0.15),
+            0 24px 60px rgba(0,0,0,0.5),
+            0 0 45px rgba(249,115,22,0.08),
             inset 0 0 0 1px rgba(255,255,255,0.05)
           `,
         }}
