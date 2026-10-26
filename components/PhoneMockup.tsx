@@ -1,10 +1,18 @@
 'use client'
 
+import Image from 'next/image'
 import { MapPin, Search, Home, Menu, ChevronRight, Wifi, Battery } from 'lucide-react'
 
 interface PhoneMockupProps {
   screen: 'home' | 'detail' | 'payment' | 'search'
 }
+
+const listingImages = [
+  '/logements/appartement-1.jpg',
+  '/logements/appartement-2.jpg',
+  '/logements/appartement-3.jpg',
+  '/logements/appartement-4.jpg',
+]
 
 function StatusBar() {
   return (
@@ -49,49 +57,30 @@ function HomeScreen() {
 
       {/* Featured listing */}
       <div className="grid grid-cols-2 gap-2 px-5 mb-3">
-        {/* MOCKUP CARD — Replace with real image */}
-        {[1,2].map((i) => (<div key={i} className="relative rounded-2xl overflow-hidden h-[110px] bg-gradient-to-br from-dark-800 to-dark-700">
-          {/* Placeholder for your app screenshot */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <Home size={24} className="text-white/20 mb-1" />
-            <span className="text-[6px] text-white/30 font-body">[ Photo du logement ]</span>
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-          <div className="absolute bottom-2.5 left-2 right-2">
-            <div className='w-12 h-3 px-1 py-1 bg-white rounded-3xl text-center text-[5.5px] text-black font-bold'>25 000 FCFA</div>
-            <div className="flex items-end justify-between mt-1">
-              <div>
-                <p className="text-white text-[6px] font-semibold leading-tight">Appartement meublé</p>
-                <div className="flex items-center gap-0.5 mt-0.5">
-                  <MapPin size={8} className="text-neutral-200" />
-                  <span className="text-[5px] text-white/60">10 rue eby, Massengo</span>
+        {listingImages.map((image) => (
+          <div key={image} className="relative rounded-2xl overflow-hidden h-[110px] bg-gradient-to-br from-dark-800 to-dark-700">
+            <Image
+              src={image}
+              alt="Photo du logement"
+              fill
+              sizes="110px"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+            <div className="absolute bottom-2.5 left-2 right-2">
+              <div className='w-12 h-3 px-1 py-1 bg-white rounded-3xl text-center text-[5.5px] text-black font-bold'>25 000 FCFA</div>
+              <div className="flex items-end justify-between mt-1">
+                <div>
+                  <p className="text-white text-[6px] font-semibold leading-tight">Appartement meublé</p>
+                  <div className="flex items-center gap-0.5 mt-0.5">
+                    <MapPin size={8} className="text-neutral-200" />
+                    <span className="text-[5px] text-white/60">10 rue eby, Massengo</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>))}
-
-        {[1,2].map((i) => (<div key={i} className="relative rounded-2xl overflow-hidden h-[110px] bg-gradient-to-br from-dark-800 to-dark-700">
-          {/* Placeholder for your app screenshot */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <Home size={24} className="text-white/20 mb-1" />
-            <span className="text-[6px] text-white/30 font-body">[ Photo du logement ]</span>
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-          <div className="absolute bottom-2.5 left-2 right-2">
-            <div className='w-12 h-3 px-1 py-1 bg-white rounded-3xl text-center text-[5.5px] text-black font-bold'>25 000 FCFA</div>
-            <div className="flex items-end justify-between mt-1">
-              <div>
-                <p className="text-white text-[6px] font-semibold leading-tight">Appartement meublé</p>
-                <div className="flex items-center gap-0.5 mt-0.5">
-                  <MapPin size={8} className="text-neutral-200" />
-                  <span className="text-[5px] text-white/60">10 rue eby, Massengo</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>))}
-
+        ))}
       </div>
 
       {/* Bottom nav */}
@@ -115,12 +104,15 @@ function DetailScreen() {
   return (
     <div className="flex flex-col h-full bg-[#0d0b08] text-white overflow-hidden">
       <StatusBar />
-      {/* Hero image placeholder */}
+      {/* Hero image */}
       <div className="relative mx-4 mt-1 rounded-2xl overflow-hidden h-[140px] bg-gradient-to-br from-dark-800 to-dark-700 flex-shrink-0">
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <Home size={28} className="text-white/20 mb-1" />
-          <span className="text-[9px] text-white/30 font-body">[ Galerie photos ]</span>
-        </div>
+        <Image
+          src="/logements/appartement-3.jpg"
+          alt="Photo du logement"
+          fill
+          sizes="200px"
+          className="object-cover"
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0d0b08] via-transparent to-transparent" />
         <button className="absolute top-3 left-3 w-7 h-7 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center">
           <ChevronRight size={12} className="text-white rotate-180" />
