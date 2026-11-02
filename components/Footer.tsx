@@ -1,5 +1,6 @@
 import { MapPin, Mail, Phone } from "lucide-react";
 import Image from "next/image";
+import { socialIcons } from "./SocialIcons";
 
 const footerLinks = {
   Produit: ["Fonctionnalités", "Comment ça marche", "Sécurité", "Mobile Money"],
@@ -7,7 +8,6 @@ const footerLinks = {
   Support: [
     "Centre d'aide",
     "Nous contacter",
-    "Signaler un problème",
     "Politique de confidentialité",
     "CGU",
   ],
@@ -65,7 +65,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2 text-dark-500 text-xs">
                 <Phone size={12} />
-                <span>+242 04 017 76 47</span>
+                <span>+242 06 767 66 43</span>
               </div>
             </div>
           </div>
@@ -91,21 +91,36 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-white/5 gap-4">
-          <p className="text-dark-600 text-xs font-body text-center md:text-left">
-            © {new Date().getFullYear()} M I R A. Tous droits réservés.
-          </p>
-          <div className="flex items-center gap-6">
-            {Object.entries(reseaux).map(([social, link]) => (
-              <a
-                key={social}
-                href={link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-dark-600 hover:text-[#00E5FF] text-xs font-body transition-colors duration-200"
-              >
-                {social}
-              </a>
-            ))}
+          <div className="flex gap-3">
+            <p className="text-dark-600 text-xs font-body text-center md:text-left">
+              © {new Date().getFullYear()} M I R A. Tous droits réservés.
+            </p>
+            <p className="text-dark-600 text-xs font-body text-center md:text-left">
+              {" "}
+              |{" "}
+            </p>
+            <p className="text-dark-600 text-xs font-body text-center md:text-left">
+              RCCM: ...
+            </p>
+          </div>
+
+          <div className="flex items-center gap-10">
+            {Object.entries(reseaux).map(([social, link]) => {
+              const Icon = socialIcons[social as keyof typeof socialIcons];
+              return (
+                <a
+                  key={social}
+                  href={link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={social}
+                  title={social}
+                  className="text-dark-600 hover:text-[#00E5FF] transition-colors duration-200 hover:-translate-y-0.5"
+                >
+                  <Icon size={18} />
+                </a>
+              );
+            })}
           </div>
         </div>
       </div>

@@ -1,64 +1,72 @@
-'use client'
+"use client";
 
-import { useState, useEffect, useRef } from 'react'
-import { Menu, X } from 'lucide-react'
-import Image from 'next/image'
-import ThemeToggle from './ThemeToggle'
+import { useState, useEffect, useRef } from "react";
+import { Menu, X } from "lucide-react";
+import Image from "next/image";
+import { APP_URL } from "@/lib/config";
 
 const navLinks = [
-  { label: 'Fonctionnalités', href: '#features' },
-  { label: 'Comment ça marche', href: '#how-it-works' },
-  { label: 'Mobile Money', href: '#payment' },
-  { label: 'Avis', href: '#testimonials' },
-]
+  { label: "Comment ça marche", href: "#how-it-works" },
+  { label: "Mobile Money", href: "#payment" },
+  { label: "Propriétaires", href: "#hote" },
+  { label: "Installer", href: "#installer" },
+];
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
-  const [open, setOpen] = useState(false)
-  const navRef = useRef<HTMLElement>(null)
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   // Ferme le menu si on clique en dehors de la nav
   useEffect(() => {
-    if (!open) return
+    if (!open) return;
     const handleOutsideClick = (e: MouseEvent | TouchEvent) => {
       if (navRef.current && !navRef.current.contains(e.target as Node)) {
-        setOpen(false)
+        setOpen(false);
       }
-    }
-    document.addEventListener('mousedown', handleOutsideClick)
-    document.addEventListener('touchstart', handleOutsideClick, { passive: true })
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("touchstart", handleOutsideClick, {
+      passive: true,
+    });
     return () => {
-      document.removeEventListener('mousedown', handleOutsideClick)
-      document.removeEventListener('touchstart', handleOutsideClick)
-    }
-  }, [open])
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("touchstart", handleOutsideClick);
+    };
+  }, [open]);
 
   const handleToggle = (e: React.MouseEvent | React.TouchEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setOpen((prev) => !prev)
-  }
+    e.preventDefault();
+    e.stopPropagation();
+    setOpen((prev) => !prev);
+  };
 
   return (
     <nav
       ref={navRef}
-      style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50}}
+      style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 50 }}
       className={[
-        'transition-all duration-300',
-        scrolled ? 'glass py-3' : 'bg-transparent py-3',
-      ].join(' ')}
+        "transition-all duration-300",
+        scrolled ? "glass py-3" : "bg-transparent py-3",
+      ].join(" ")}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
         <a href="#hero" className="flex items-center gap-3 group">
           <Image src="/logo.png" alt="" width={48} height={48} />
-          <Image src="/name.png" alt="" width={86} height={86} className="theme-invert" />
+          <Image
+            src="/name.png"
+            alt=""
+            width={86}
+            height={86}
+            className="theme-invert"
+          />
         </a>
 
         {/* Desktop nav */}
@@ -67,7 +75,7 @@ export default function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="text-dark-300 hover:text-white text-sm font-body font-medium transition-colors duration-200 relative group"
+              className="text-dark-300 text-sm font-body font-medium transition-colors duration-200 relative group"
             >
               {link.label}
               <span className="absolute -bottom-1 left-0 w-0 h-px bg-[#00E5FF] transition-all duration-300 group-hover:w-full" />
@@ -76,15 +84,13 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-3">
-          <ThemeToggle />
-
           {/* CTA desktop */}
           <div className="hidden md:flex items-center gap-4">
             <a
-              href="#waitlist"
+              href={APP_URL}
               className="relative overflow-hidden px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#2233DD] via-[#1A6BFF] to-[#00E5FF] text-white text-sm font-medium shadow-glow hover:shadow-glow-lg transition-all duration-300 hover:-translate-y-0.5 group"
             >
-              <span className="relative z-10">Rejoindre la liste d'attente</span>
+              <span className="relative z-10">Ouvrir l&apos;application</span>
               <div className="absolute inset-0 shimmer-btn opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </a>
           </div>
@@ -94,16 +100,16 @@ export default function Navbar() {
             type="button"
             onClick={handleToggle}
             onTouchEnd={handleToggle}
-            aria-label={open ? 'Fermer le menu' : 'Ouvrir le menu'}
+            aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
             aria-expanded={open}
             style={{
-              WebkitTapHighlightColor: 'transparent',
-              touchAction: 'manipulation',
-              cursor: 'pointer',
+              WebkitTapHighlightColor: "transparent",
+              touchAction: "manipulation",
+              cursor: "pointer",
               minWidth: 44,
               minHeight: 44,
-              background: 'none',
-              border: 'none',
+              background: "none",
+              border: "none",
               padding: 0,
             }}
             className="md:hidden flex items-center justify-center text-dark-200"
@@ -117,10 +123,10 @@ export default function Navbar() {
       <div
         className="md:hidden overflow-hidden"
         style={{
-          maxHeight: open ? '400px' : '0px',
+          maxHeight: open ? "400px" : "0px",
           opacity: open ? 1 : 0,
-          transition: 'max-height 0.3s ease, opacity 0.25s ease',
-          WebkitTransition: 'max-height 0.3s ease, opacity 0.25s ease',
+          transition: "max-height 0.3s ease, opacity 0.25s ease",
+          WebkitTransition: "max-height 0.3s ease, opacity 0.25s ease",
         }}
       >
         <div className="px-6 pb-6 pt-2 space-y-4 glass border-t border-white/5 mt-3">
@@ -128,21 +134,21 @@ export default function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="block text-dark-200 hover:text-white text-sm font-medium py-2 transition-colors"
+              className="block text-dark-200 text-sm font-medium py-2 transition-colors"
               onClick={() => setOpen(false)}
             >
               {link.label}
             </a>
           ))}
           <a
-            href="#waitlist"
+            href={APP_URL}
             className="block w-full text-center px-5 py-3 rounded-xl bg-gradient-to-r from-[#2233DD] via-[#1A6BFF] to-[#00E5FF] text-white text-sm font-medium mt-2"
             onClick={() => setOpen(false)}
           >
-            Rejoindre la liste d'attente
+            Ouvrir l&apos;application
           </a>
         </div>
       </div>
     </nav>
-  )
+  );
 }
