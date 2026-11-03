@@ -150,8 +150,8 @@ const LOCAL_REPLIES: FaqIntent[] = [
     ],
     content:
       'Plus de 2 000 logements vérifiés à Brazzaville, Pointe-Noire, Dolisie et partout au Congo. 🏠',
-    href: '#features',
-    linkLabel: 'Voir les fonctionnalités',
+    href: APP_URL,
+    linkLabel: "Ouvrir l'application",
   },
   {
     phrases: [
@@ -254,7 +254,7 @@ const LOCAL_REPLIES: FaqIntent[] = [
     ],
     content:
       "Chaque paiement est protégé jusqu'à confirmation de votre séjour. En cas de problème, vous êtes remboursé intégralement si votre demande est faite dans les 24 h suivant le paiement. 🔒",
-    href: '#features',
+    href: '#payment',
     linkLabel: 'Voir nos garanties',
   },
   {
@@ -319,7 +319,7 @@ const LOCAL_REPLIES: FaqIntent[] = [
     keywords: ['mira', 'fondateur', 'createur', 'signifie', 'objectif'],
     content:
       "M I R A est une plateforme de location immobilière pensée pour le Congo : trouver un logement, réserver et payer via Mobile Money. Elle a été créée par Alex Jonathan NGASSAKI. 🏠",
-    href: '#features',
+    href: '#how-it-works',
     linkLabel: "Découvrir M I R A",
   },
   {

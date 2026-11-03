@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowDown, ArrowUpRight, Star } from "lucide-react";
-import PhoneMockup from "./PhoneMockup";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
+import Image from "next/image";
 import { APP_URL } from "@/lib/config";
 
 export default function Hero() {
@@ -103,14 +103,14 @@ export default function Hero() {
             simple, rapide et sans tracas.
           </p>
 
-          {/* CTA buttons */}
+          {/* CTA */}
           <div
-            className="flex flex-wrap gap-4 animate-fade-up opacity-0 stagger-5"
+            className="animate-fade-up opacity-0 stagger-5"
             style={{ animationFillMode: "forwards" }}
           >
             <a
               href={APP_URL}
-              className="group relative overflow-hidden flex items-center gap-2 px-7 py-4 rounded-2xl bg-gradient-to-r from-[#2233DD] via-[#1A6BFF] to-[#00E5FF] text-white font-medium shadow-glow hover:shadow-glow-lg transition-all duration-300 hover:-translate-y-1"
+              className="group relative overflow-hidden inline-flex items-center gap-2 px-7 py-4 rounded-2xl bg-gradient-to-r from-[#2233DD] via-[#1A6BFF] to-[#00E5FF] text-white font-medium shadow-glow hover:shadow-glow-lg transition-all duration-300 hover:-translate-y-1"
             >
               <span className="relative z-10">Ouvrir l&apos;application</span>
               <ArrowUpRight
@@ -119,34 +119,33 @@ export default function Hero() {
               />
               <div className="absolute inset-0 shimmer-btn" />
             </a>
-            <a
-              href="#features"
-              className="flex items-center gap-2 px-7 py-4 rounded-2xl glass border border-white/10 text-white/80 hover:text-white font-medium transition-all duration-300 hover:-translate-y-1 hover:border-[#00E5FF]"
-            >
-              Voir les fonctionnalités
-            </a>
+            <p className="mt-3 text-sm font-body text-dark-400">
+              Disponible à Brazzaville et Pointe-Noire.
+            </p>
           </div>
         </div>
 
-        {/* Right — Phone mockups */}
+        {/* Right — App screenshot */}
         <div
-          className="relative flex justify-center items-center h-[600px] animate-fade-in opacity-0 stagger-3"
+          className="flex justify-end animate-fade-in opacity-0 stagger-3"
           style={{ animationFillMode: "forwards" }}
         >
-          {/* Main phone */}
-          <div className="relative z-10 animate-float">
-            <PhoneMockup screen="home" />
-          </div>
-
-          {/* Secondary phone */}
-          <div className="absolute -right-4 lg:-right-8 top-16 z-0 scale-[0.78] animate-float-delay opacity-90">
-            <PhoneMockup screen="detail" />
+          <div className="w-full max-w-[250px] overflow-hidden rounded-[28px] border border-white/10 shadow-md">
+            <Image
+              src="/screenshots/mockups_home.png"
+              alt="Écran d’accueil de l’application MIRA : appartements meublés à Brazzaville et Pointe-Noire, avec leur prix en FCFA"
+              width={591}
+              height={1280}
+              sizes="280px"
+              preload
+              className="block h-auto w-full"
+            />
           </div>
         </div>
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce-subtle opacity-60">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-2 animate-bounce-subtle opacity-60">
         <span className="text-xs text-dark-400 font-mono tracking-widest uppercase">
           Scroll
         </span>

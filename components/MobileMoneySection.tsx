@@ -18,9 +18,11 @@ const providers = [
 ];
 
 const benefits = [
-  { icon: Shield, text: "Argent protégé jusqu'à confirmation" },
+  {
+    icon: Shield,
+    text: "Votre argent est protégé jusqu’à la confirmation de votre séjour, et remboursé en cas de problème.",
+  },
   { icon: Zap, text: "Confirmation instantanée par SMS" },
-  { icon: CheckCircle, text: "Remboursement garanti en 24h" },
 ];
 
 export default function MobileMoneySection() {

@@ -8,7 +8,7 @@ import { APP_URL } from "@/lib/config";
 const navLinks = [
   { label: "Comment ça marche", href: "#how-it-works" },
   { label: "Mobile Money", href: "#payment" },
-  { label: "Propriétaires", href: "#hote" },
+  { label: "Propriétaires", href: "#publier" },
   { label: "Installer", href: "#installer" },
 ];
 
@@ -90,7 +90,7 @@ export default function Navbar() {
               href={APP_URL}
               className="relative overflow-hidden px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#2233DD] via-[#1A6BFF] to-[#00E5FF] text-white text-sm font-medium shadow-glow hover:shadow-glow-lg transition-all duration-300 hover:-translate-y-0.5 group"
             >
-              <span className="relative z-10">Ouvrir l&apos;application</span>
+              <span className="relative z-10">Ouvrir MIRA</span>
               <div className="absolute inset-0 shimmer-btn opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </a>
           </div>
@@ -145,7 +145,7 @@ export default function Navbar() {
             className="block w-full text-center px-5 py-3 rounded-xl bg-gradient-to-r from-[#2233DD] via-[#1A6BFF] to-[#00E5FF] text-white text-sm font-medium mt-2"
             onClick={() => setOpen(false)}
           >
-            Ouvrir l&apos;application
+            Ouvrir MIRA
           </a>
         </div>
       </div>

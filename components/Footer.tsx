@@ -3,7 +3,7 @@ import Image from "next/image";
 import { socialIcons } from "./SocialIcons";
 
 const footerLinks = {
-  Produit: ["Fonctionnalités", "Comment ça marche", "Sécurité", "Mobile Money"],
+  Produit: ["Comment ça marche", "Sécurité", "Mobile Money"],
   Entreprise: ["À propos", "Partenaires"],
   Support: [
     "Centre d'aide",

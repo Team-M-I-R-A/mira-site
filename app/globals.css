@@ -10,7 +10,6 @@
   --font-mono: 'DM Mono';
 
   --brand-orange: #00E5FF;
-  --brand-amber: #00E5FF;
   --dark-50: 15 15 16;
   --dark-100: 30 30 32;
   --dark-200: 45 47 51;
@@ -22,7 +21,6 @@
   --dark-800: 235 236 238;
   --dark-900: 245 246 247;
   --dark-950: 255 255 255;
-  --light-50: #fdf9f5;
 }
 
 * {
@@ -133,15 +131,6 @@ body {
   100% { background-position: -200% 0; }
 }
 
-/* Glow effects */
-.glow-blue {
-  filter: drop-shadow(0 0 20px rgb(6, 23, 43));
-}
-
-.text-glow {
-  text-shadow: 0 0 30px rgba(14, 217, 224);
-}
-
 /* Section animations */
 .reveal {
   opacity: 0;
@@ -169,65 +158,10 @@ body {
   }
 }
 
-/* Phone mockup styles */
-.phone-screen {
-  border-radius: 40px;
-  overflow: hidden;
-  position: relative;
-}
-
-.phone-notch {
-  position: absolute;
-  top: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100px;
-  height: 28px;
-  background: #0d0b08;
-  border-radius: 20px;
-  z-index: 10;
-}
-
-/* Marquee */
-.marquee-wrapper {
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-/* Orbit animation */
-@-webkit-keyframes orbit {
-  from { -webkit-transform: rotate(0deg) translateX(140px) rotate(0deg); transform: rotate(0deg) translateX(140px) rotate(0deg); }
-  to { -webkit-transform: rotate(360deg) translateX(140px) rotate(-360deg); transform: rotate(360deg) translateX(140px) rotate(-360deg); }
-}
-@keyframes orbit {
-  from { transform: rotate(0deg) translateX(140px) rotate(0deg); }
-  to { transform: rotate(360deg) translateX(140px) rotate(-360deg); }
-}
-
-.orbit-item {
-  -webkit-animation: orbit 12s linear infinite;
-  animation: orbit 12s linear infinite;
-}
-
-.orbit-item-2 {
-  -webkit-animation: orbit 18s linear infinite reverse;
-  animation: orbit 18s linear infinite reverse;
-}
-
-.orbit-item-3 {
-  -webkit-animation: orbit 15s linear infinite;
-  animation: orbit 15s linear infinite;
-  -webkit-animation-delay: -6s;
-  animation-delay: -6s;
-}
-
 /* Staggered animations */
-.stagger-1 { -webkit-animation-delay: 0.1s; animation-delay: 0.1s; }
 .stagger-2 { -webkit-animation-delay: 0.2s; animation-delay: 0.2s; }
 .stagger-3 { -webkit-animation-delay: 0.3s; animation-delay: 0.3s; }
-.stagger-4 { -webkit-animation-delay: 0.4s; animation-delay: 0.4s; }
 .stagger-5 { -webkit-animation-delay: 0.5s; animation-delay: 0.5s; }
-.stagger-6 { -webkit-animation-delay: 0.6s; animation-delay: 0.6s; }
 
 /* Particle */
 @-webkit-keyframes particleFloat {
@@ -247,21 +181,6 @@ body {
   -webkit-animation: particleFloat linear infinite;
   animation: particleFloat linear infinite;
   will-change: transform, opacity;
-}
-
-/* Mobile money badge pulse */
-@-webkit-keyframes mmPulse {
-  0%, 100% { -webkit-box-shadow: 0 0 0 0 rgba(16, 52, 117, 0.4); box-shadow: 0 0 0 0 rgba(16, 52, 117, 0.4); }
-  50% { -webkit-box-shadow: 0 0 0 12px rgba(249, 115, 22, 0); box-shadow: 0 0 0 12px rgba(249, 115, 22, 0); }
-}
-@keyframes mmPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 52, 117, 0.4); }
-  50% { box-shadow: 0 0 0 12px rgba(249, 115, 22, 0); }
-}
-
-.mm-pulse {
-  -webkit-animation: mmPulse 2s ease infinite;
-  animation: mmPulse 2s ease infinite;
 }
 
 /* Sur mobile, réduire la distance de translation pour plus de subtilité */
@@ -847,20 +766,8 @@ body {
   color: #ffffff;
 }
 
-.hover\:text-white:hover {
-  color: #0d0b08;
-}
-
-.group:hover .group-hover\:text-white {
-  color: #0d0b08;
-}
-
 .text-\[\#00E5FF\] {
   color: #00798f;
-}
-
-.text-\[\#00E5FF\]\/60 {
-  color: rgba(0, 121, 143, 0.75);
 }
 
 /* Surfaces */
@@ -888,19 +795,11 @@ body {
   border-color: rgba(0, 122, 153, 0.2) !important;
 }
 
-.border-\[\#00E5FF\]\/20 {
-  border-color: rgba(0, 122, 153, 0.28) !important;
-}
-
 /* Decorative glows and separators */
 [class*='bg-[#080616]'],
 [class*='bg-[#021A54]'],
 [class*='bg-[#0a1320]'],
-[class*='bg-[#0c1825]'],
-[class*='bg-[#041825]'],
-[class*='bg-[#081420e3]'],
-[class*='bg-[#030f29d0]'],
-[class*='bg-[#0e133b79]'] {
+[class*='bg-[#081420e3]'] {
   background-color: rgba(0, 122, 153, 0.1) !important;
 }
 
@@ -908,48 +807,12 @@ body {
   background-color: rgba(0, 122, 153, 0.35) !important;
 }
 
-[class*='border-[#0e1133]'],
 [class*='border-[#0a1320]'] {
   border-color: rgba(13, 11, 8, 0.09) !important;
 }
 
-[class*='via-[#0e1335]'],
-[class*='via-[#122f55]'],
-[class*='via-[#0a1320]'] {
+[class*='via-[#122f55]'] {
   --tw-gradient-via: rgba(13, 11, 8, 0.1);
-}
-
-/* Phone mockups keep their dark UI */
-.phone-mockup {
-  --dark-50: 248 247 244;
-  --dark-100: 240 237 230;
-  --dark-200: 226 221 211;
-  --dark-300: 204 196 181;
-  --dark-400: 179 168 150;
-  --dark-500: 154 141 122;
-  --dark-600: 125 112 101;
-  --dark-700: 95 85 76;
-  --dark-800: 61 54 48;
-  --dark-900: 30 26 22;
-  --dark-950: 13 11 8;
-}
-
-.phone-mockup .text-white { color: #ffffff; }
-.phone-mockup .text-white\/90 { color: rgba(255, 255, 255, 0.9); }
-.phone-mockup .text-white\/80 { color: rgba(255, 255, 255, 0.8); }
-.phone-mockup .text-white\/70 { color: rgba(255, 255, 255, 0.7); }
-.phone-mockup .text-white\/60 { color: rgba(255, 255, 255, 0.6); }
-.phone-mockup .text-white\/50 { color: rgba(255, 255, 255, 0.5); }
-.phone-mockup .text-white\/40 { color: rgba(255, 255, 255, 0.4); }
-.phone-mockup .text-white\/30 { color: rgba(255, 255, 255, 0.3); }
-.phone-mockup .text-white\/20 { color: rgba(255, 255, 255, 0.2); }
-
-.phone-mockup .bg-white\/5 {
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-.phone-mockup [class*='border-white/'] {
-  border-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Chatbot */
