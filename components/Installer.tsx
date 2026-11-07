@@ -34,23 +34,23 @@ const androidSteps: Step[] = [
 const iosSteps: Step[] = [
   {
     title: "Ouvrez MIRA dans Safari.",
-    src: "/install/ios-1.png",
+    src: "/screenshots/step2.png",
     alt: "Étape 1 sur iPhone : MIRA ouverte dans Safari",
   },
   {
     title: "Touchez le bouton Partager.",
-    src: "/install/ios-2.png",
+    src: "/screenshots/step1.png",
     alt: "Étape 2 sur iPhone : bouton Partager de Safari",
   },
   {
     title: "Choisissez « Sur l’écran d’accueil » puis « Ajouter ».",
-    src: "/install/ios-3.png",
+    src: "/screenshots/step3.png",
     alt: "Étape 3 sur iPhone : option Sur l’écran d’accueil dans le menu Partager",
   },
 ];
 
 const openAppButton =
-  "inline-flex min-h-[48px] touch-manipulation items-center justify-center rounded-xl border border-white/10 px-7 py-3 text-center text-sm font-medium text-white transition-colors duration-200 hover:bg-dark-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00798f] focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950";
+  "press inline-flex min-h-[48px] touch-manipulation items-center justify-center rounded-xl border border-white/10 px-7 py-3 text-center text-sm font-medium text-white transition-colors duration-200 hover:bg-dark-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00798f] focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950";
 
 const IOS_USER_AGENT = /iPhone|iPad|iPod/i;
 
@@ -85,7 +85,7 @@ function AndroidTutorial() {
 function IosTutorial() {
   return (
     <div>
-      <StepShowcase steps={iosSteps} />
+      <StepShowcase steps={iosSteps} withFrame={false} />
       <div className="mt-14 flex flex-col items-center gap-6 text-center">
         <p className="text-pretty text-sm text-dark-400">
           Sur iPhone, l’installation se fait uniquement depuis Safari.

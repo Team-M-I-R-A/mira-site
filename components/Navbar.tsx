@@ -15,12 +15,33 @@ const navLinks = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [activeHref, setActiveHref] = useState<string | null>(null);
   const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Indique la section en cours de lecture
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(({ isIntersecting, target }) => {
+          const href = `#${target.id}`;
+          setActiveHref((current) =>
+            isIntersecting ? href : current === href ? null : current,
+          );
+        });
+      },
+      { rootMargin: "-45% 0px -54% 0px" },
+    );
+    navLinks.forEach(({ href }) => {
+      const section = document.querySelector(href);
+      if (section) observer.observe(section);
+    });
+    return () => observer.disconnect();
   }, []);
 
   // Ferme le menu si on clique en dehors de la nav
@@ -41,24 +62,22 @@ export default function Navbar() {
     };
   }, [open]);
 
-  const handleToggle = (e: React.MouseEvent | React.TouchEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setOpen((prev) => !prev);
-  };
-
   return (
     <nav
       ref={navRef}
       style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 50 }}
       className={[
-        "transition-all duration-300",
-        scrolled ? "glass py-3" : "bg-transparent py-3",
+        "transition-[background-color] duration-300",
+        scrolled || open ? "glass py-3" : "bg-transparent py-3",
       ].join(" ")}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
-        <a href="#hero" className="flex items-center gap-3 group">
+        <a
+          href="#hero"
+          aria-label="MIRA, retour en haut de page"
+          className="press flex items-center gap-3"
+        >
           <Image src="/logo.png" alt="" width={48} height={48} />
           <Image
             src="/name.png"
@@ -75,10 +94,17 @@ export default function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="text-dark-300 text-sm font-body font-medium transition-colors duration-200 relative group"
+              aria-current={activeHref === link.href ? "location" : undefined}
+              className={`press relative group text-sm font-body font-medium transition-colors duration-200 hover:text-dark-50 ${
+                activeHref === link.href ? "text-dark-50" : "text-dark-300"
+              }`}
             >
               {link.label}
-              <span className="absolute -bottom-1 left-0 w-0 h-px bg-[#00E5FF] transition-all duration-300 group-hover:w-full" />
+              <span
+                className={`absolute -bottom-1 left-0 h-px w-full origin-left bg-[#00798f] transition-transform duration-300 group-hover:scale-x-100 ${
+                  activeHref === link.href ? "scale-x-100" : "scale-x-0"
+                }`}
+              />
             </a>
           ))}
         </div>
@@ -88,18 +114,16 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-4">
             <a
               href={APP_URL}
-              className="relative overflow-hidden px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#2233DD] via-[#1A6BFF] to-[#00E5FF] text-white text-sm font-medium shadow-glow hover:shadow-glow-lg transition-all duration-300 hover:-translate-y-0.5 group"
+              className="press px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#2233DD] to-[#1A6BFF] text-white text-sm font-medium shadow-glow hover:shadow-glow-lg transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5"
             >
-              <span className="relative z-10">Ouvrir MIRA</span>
-              <div className="absolute inset-0 shimmer-btn opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              Ouvrir MIRA
             </a>
           </div>
 
-          {/* Mobile toggle — Safari-safe */}
+          {/* Mobile toggle */}
           <button
             type="button"
-            onClick={handleToggle}
-            onTouchEnd={handleToggle}
+            onClick={() => setOpen((prev) => !prev)}
             aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
             aria-expanded={open}
             style={{
@@ -125,16 +149,20 @@ export default function Navbar() {
         style={{
           maxHeight: open ? "400px" : "0px",
           opacity: open ? 1 : 0,
-          transition: "max-height 0.3s ease, opacity 0.25s ease",
-          WebkitTransition: "max-height 0.3s ease, opacity 0.25s ease",
+          // Retire aussi les liens du parcours clavier quand le menu est fermé
+          visibility: open ? "visible" : "hidden",
+          transition: "max-height 0.3s ease, opacity 0.25s ease, visibility 0.3s",
+          WebkitTransition:
+            "max-height 0.3s ease, opacity 0.25s ease, visibility 0.3s",
         }}
       >
-        <div className="px-6 pb-6 pt-2 space-y-4 glass border-t border-white/5 mt-3">
+        <div className="px-6 pb-6 pt-2 space-y-4 border-t border-white/5 mt-3">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="block text-dark-200 text-sm font-medium py-2 transition-colors"
+              aria-current={activeHref === link.href ? "location" : undefined}
+              className="press block text-dark-200 text-sm font-medium py-2 transition-colors"
               onClick={() => setOpen(false)}
             >
               {link.label}
@@ -142,7 +170,7 @@ export default function Navbar() {
           ))}
           <a
             href={APP_URL}
-            className="block w-full text-center px-5 py-3 rounded-xl bg-gradient-to-r from-[#2233DD] via-[#1A6BFF] to-[#00E5FF] text-white text-sm font-medium mt-2"
+            className="press block w-full text-center px-5 py-3 rounded-xl bg-gradient-to-r from-[#2233DD] to-[#1A6BFF] text-white text-sm font-medium mt-2"
             onClick={() => setOpen(false)}
           >
             Ouvrir MIRA

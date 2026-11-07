@@ -44,7 +44,6 @@ const config: Config = {
       animation: {
         'fade-up': 'fadeUp 0.8s ease forwards',
         'fade-in': 'fadeIn 1s ease forwards',
-        'bounce-subtle': 'bounceSubtle 2s ease-in-out infinite',
       },
       keyframes: {
         fadeUp: {
@@ -54,10 +53,6 @@ const config: Config = {
         fadeIn: {
           from: { opacity: '0' },
           to: { opacity: '1' },
-        },
-        bounceSubtle: {
-          '0%, 100%': { transform: 'translateY(0)', WebkitTransform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-8px)', WebkitTransform: 'translateY(-8px)' },
         },
       },
       boxShadow: {

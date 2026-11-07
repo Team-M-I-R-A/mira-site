@@ -16,7 +16,7 @@ type InstallTabsProps = {
 };
 
 const tabClass =
-  "flex-1 touch-manipulation rounded-full px-4 py-2.5 text-sm font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00798f] focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950";
+  "press flex-1 touch-manipulation rounded-full px-4 py-2.5 text-sm font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00798f] focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950";
 
 const panelClass =
   "rounded-3xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00798f]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950";
@@ -77,7 +77,7 @@ export default function InstallTabs({
               className={[
                 tabClass,
                 selected
-                  ? "bg-gradient-to-r from-[#2233DD] via-[#1A6BFF] to-[#00E5FF] text-white"
+                  ? "bg-gradient-to-r from-[#2233DD] to-[#1A6BFF] text-white"
                   : "text-dark-300 hover:text-[#2233DD]",
               ].join(" ")}
             >

@@ -151,7 +151,7 @@ const LOCAL_REPLIES: FaqIntent[] = [
     content:
       'Plus de 2 000 logements vérifiés à Brazzaville, Pointe-Noire, Dolisie et partout au Congo. 🏠',
     href: APP_URL,
-    linkLabel: "Ouvrir l'application",
+    linkLabel: "Ouvrir MIRA",
   },
   {
     phrases: [
@@ -168,7 +168,7 @@ const LOCAL_REPLIES: FaqIntent[] = [
     content:
       "Les propriétaires peuvent publier leurs logements directement dans l'application 🏠. Ouvrez M I R A pour publier votre annonce dès maintenant.",
     href: APP_URL,
-    linkLabel: "Ouvrir l'application",
+    linkLabel: "Ouvrir MIRA",
   },
   {
     phrases: [
@@ -223,7 +223,7 @@ const LOCAL_REPLIES: FaqIntent[] = [
     content:
       "L'utilisation de M I R A est gratuite pour les utilisateurs. Les prix des logements varient selon le logement et la ville : ouvrez l'application pour les découvrir. 💰",
     href: APP_URL,
-    linkLabel: "Ouvrir l'application",
+    linkLabel: "Ouvrir MIRA",
   },
   {
     phrases: [
@@ -299,7 +299,7 @@ const LOCAL_REPLIES: FaqIntent[] = [
     content:
       "Bonne nouvelle : l'application M I R A est disponible dès maintenant 🚀 Ouvrez-la depuis votre navigateur pour créer votre compte et commencer à chercher votre logement.",
     href: APP_URL,
-    linkLabel: "Ouvrir l'application",
+    linkLabel: "Ouvrir MIRA",
   },
   {
     phrases: [
@@ -421,12 +421,13 @@ function getLocalReply(text: string): LocalReply | null {
 export default function ChatbotWidget() {
   const [open, setOpen] = useState(false)
   const [closing, setClosing] = useState(false)
-  const [messages, setMessages] = useState<{role: string, content: string, href?: string, linkLabel?: string}[]>([])
+  const [messages, setMessages] = useState<{role: string, content: string, href?: string, linkLabel?: string}[]>([WELCOME_MESSAGE])
   const [input, setInput] = useState('')
   const [typing, setTyping] = useState(false)
-  const [showBadge, setShowBadge] = useState(true)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const toggleRef = useRef<HTMLButtonElement>(null)
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const sendMessage = async (text: string) => {
     if (!text.trim()) return
@@ -438,9 +439,6 @@ export default function ChatbotWidget() {
     // ✅ Réponse locale — zéro token consommé
     const local = getLocalReply(text)
     if (local) {
-      setTyping(true)
-      await new Promise(r => setTimeout(r, 500)) // simulation légère
-      setTyping(false)
       setMessages(prev => [...prev, {
         role: 'assistant',
         content: local.content,
@@ -459,6 +457,7 @@ export default function ChatbotWidget() {
         body: JSON.stringify({ message: text }),
       })
       const data = await res.json()
+      if (!res.ok || !data.response) throw new Error(`Réponse invalide (${res.status})`)
       setMessages(prev => [...prev, { role: 'assistant', content: data.response }])
     } catch (err) {
       console.error('Erreur lors du POST: ', err)
@@ -470,21 +469,27 @@ export default function ChatbotWidget() {
 
   // Auto-scroll
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    messagesEndRef.current?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' })
   }, [messages, typing])
+
+  // Au tactile, le focus ouvrirait le clavier par-dessus la conversation
+  const focusInput = () => {
+    if (window.matchMedia('(pointer: fine)').matches) {
+      inputRef.current?.focus({ preventScroll: true })
+    }
+  }
 
   // Focus input when opened
   useEffect(() => {
-    if (open) {
-      setShowBadge(false)
-      setMessages((prev) => (prev.length === 0 ? [WELCOME_MESSAGE] : prev))
-      setTimeout(() => inputRef.current?.focus(), 300)
-    }
+    if (open) focusInput()
   }, [open])
 
   const handleClose = () => {
     setClosing(true)
-    setTimeout(() => {
+    toggleRef.current?.focus({ preventScroll: true })
+    if (closeTimer.current) clearTimeout(closeTimer.current)
+    closeTimer.current = setTimeout(() => {
       setOpen(false)
       setClosing(false)
     }, 240)
@@ -498,30 +503,33 @@ export default function ChatbotWidget() {
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open])
 
-  const handleToggle = (e: React.MouseEvent | React.TouchEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    if (open) {
+  const handleToggle = () => {
+    if (closing) {
+      // Un clic pendant la fermeture la renverse depuis la position actuelle
+      if (closeTimer.current) clearTimeout(closeTimer.current)
+      setClosing(false)
+      focusInput()
+    } else if (open) {
       handleClose()
     } else {
       setOpen(true)
     }
   }
 
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') sendMessage(input)
   }
+
+  const isOpen = open && !closing
 
   return (
     <div className="chatbot-bubble">
       {/* Chat window */}
       {open && (
         <div
-          className={`chatbot-window${closing ? 'closing' : ''}`}
+          className={`chatbot-window${closing ? ' closing' : ''}`}
           role="dialog"
           aria-label="Assistant M I R A"
         >
@@ -541,7 +549,6 @@ export default function ChatbotWidget() {
               type="button"
               className="chatbot-close"
               onClick={handleClose}
-              onTouchEnd={(e) => { e.preventDefault(); handleClose() }}
               aria-label="Fermer le chat"
               style={{ WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation' }}
             >
@@ -557,7 +564,7 @@ export default function ChatbotWidget() {
             aria-label="Historique de la conversation"
           >
             {messages.map((msg, i) => (
-              <div key={i} className={`chat-msg ${msg.role}`}>
+              <div key={i} className={`chat-msg ${msg.role === 'user' ? 'user' : 'bot'}`}>
                 {msg.content}
                 {msg.href && (
                   <a
@@ -569,7 +576,7 @@ export default function ChatbotWidget() {
                         : undefined
                     }
                     onClick={() => handleClose()}
-                    className="chat-msg-link"
+                    className="chat-msg-link press"
                   >
                     {msg.linkLabel} <ArrowRight size={14} />
                   </a>
@@ -595,7 +602,6 @@ export default function ChatbotWidget() {
                   key={r}
                   className="quick-reply-btn"
                   onClick={() => sendMessage(r)}
-                  onTouchEnd={(e) => { e.preventDefault(); sendMessage(r) }}
                   style={{ WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation' }}
                 >
                   {r}
@@ -623,7 +629,6 @@ export default function ChatbotWidget() {
               type="button"
               className="chatbot-send"
               onClick={() => sendMessage(input)}
-              onTouchEnd={(e) => { e.preventDefault(); sendMessage(input) }}
               disabled={!input.trim() || typing}
               aria-label="Envoyer"
               style={{ WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation' }}
@@ -634,14 +639,14 @@ export default function ChatbotWidget() {
         </div>
       )}
 
-      {/* Toggle button — Safari iOS fixes: onTouchEnd + touch-action + tap highlight */}
+      {/* Toggle button */}
       <button
+        ref={toggleRef}
         type="button"
-        className={`chatbot-toggle${!open && showBadge ? ' has-badge' : ''}`}
+        className="chatbot-toggle"
         onClick={handleToggle}
-        onTouchEnd={handleToggle}
-        aria-label={open ? 'Fermer le chat' : 'Ouvrir le chat'}
-        aria-expanded={open}
+        aria-label={isOpen ? 'Fermer le chat' : 'Ouvrir le chat'}
+        aria-expanded={isOpen}
         aria-haspopup="dialog"
         style={{
           position: 'relative',
@@ -650,10 +655,7 @@ export default function ChatbotWidget() {
           cursor: 'pointer',
         }}
       >
-        {open ? <X size={24} style={{ color: '#fff' }} /> : <MessageCircle size={24} style={{ color: '#fff' }} />}
-        {!open && showBadge && (
-          <span className="chatbot-badge">1</span>
-        )}
+        {isOpen ? <X size={24} style={{ color: '#fff' }} /> : <MessageCircle size={24} style={{ color: '#fff' }} />}
       </button>
     </div>
   )

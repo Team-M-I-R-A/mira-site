@@ -6,10 +6,10 @@ import { useInstallPrompt } from "@/hooks/useInstallPrompt";
 // Chaînes de classes statiques : le premier rendu client doit produire
 // exactement le même attribut `className` que le HTML rendu par le serveur.
 const primaryButton =
-  "inline-flex min-h-[48px] min-w-[220px] touch-manipulation items-center justify-center rounded-xl bg-gradient-to-r from-[#2233DD] via-[#1A6BFF] to-[#00E5FF] text-white px-7 py-3 text-center text-sm font-medium transition-colors duration-200 hover:bg-[#00c8e0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00798f] focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 disabled:cursor-not-allowed disabled:opacity-60";
+  "press inline-flex min-h-[48px] min-w-[220px] touch-manipulation items-center justify-center rounded-xl bg-gradient-to-r from-[#2233DD] to-[#1A6BFF] text-white px-7 py-3 text-center text-sm font-medium transition-colors duration-200 hover:bg-[#00c8e0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00798f] focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 disabled:cursor-not-allowed disabled:opacity-60";
 
 const secondaryButton =
-  "inline-flex min-h-[48px] touch-manipulation items-center justify-center rounded-xl border border-white/10 px-7 py-3 text-center text-sm font-medium text-white transition-colors duration-200 hover:bg-dark-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00798f] focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950";
+  "press inline-flex min-h-[48px] touch-manipulation items-center justify-center rounded-xl border border-white/10 px-7 py-3 text-center text-sm font-medium text-white transition-colors duration-200 hover:bg-dark-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00798f] focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950";
 
 export default function InstallButton() {
   const { canInstall, isInstalled, isPrompting, promptInstall } =

@@ -1,7 +1,7 @@
 import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
-  allowedDevOrigins: ['192.168.100.6','unseparately-nonrelational-uriel.ngrok-free.dev',],
+  allowedDevOrigins: ['192.168.100.6','192.168.1.88',],
   turbopack: {
     root: process.cwd(),
   },

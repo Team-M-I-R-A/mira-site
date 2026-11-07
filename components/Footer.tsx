@@ -1,24 +1,30 @@
 import { MapPin, Mail, Phone } from "lucide-react";
 import Image from "next/image";
+import { APP_URL } from "@/lib/config";
 import { socialIcons } from "./SocialIcons";
 
-const footerLinks = {
-  Produit: ["Comment ça marche", "Sécurité", "Mobile Money"],
-  Entreprise: ["À propos", "Partenaires"],
-  Support: [
-    "Centre d'aide",
-    "Nous contacter",
-    "Politique de confidentialité",
-    "CGU",
+const footerLinks: Record<string, { label: string; href?: string }[]> = {
+  Produit: [
+    { label: "Comment ça marche", href: "#how-it-works" },
+    { label: "Sécurité", href: "#payment" },
+    { label: "Mobile Money", href: "#payment" },
   ],
-  Villes: ["Brazzaville", "Pointe-Noire"],
+  Entreprise: [{ label: "À propos" }, { label: "Partenaires" }],
+  Support: [
+    { label: "Centre d'aide" },
+    { label: "Nous contacter", href: "mailto:ngassakialex20@gmail.com" },
+    {
+      label: "Politique de confidentialité",
+      href: `${APP_URL}/logements/menu/confidentialite`,
+    },
+    { label: "CGU" },
+  ],
+  Villes: [{ label: "Brazzaville" }, { label: "Pointe-Noire" }],
 };
 
 const reseaux = {
   TikTok: "https://www.tiktok.com/@mira.site.cg",
   Instagram: "https://www.instagram.com/mira.site.cg",
-  Linkedin: "https://linkedin",
-  WhatsApp: "https://whatsApp.com",
 };
 
 export default function Footer() {
@@ -35,7 +41,7 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-4">
               <Image src="/logo.png" alt="" width={60} height={60} />
-              <a href="#hero" className="">
+              <a href="#hero" aria-label="MIRA, retour en haut de page" className="press">
                 <Image
                   src="/name.png"
                   alt=""
@@ -50,20 +56,20 @@ export default function Footer() {
               congolaises.
             </p>
             <div className="space-y-2">
-              <div className="flex items-center gap-2 text-dark-500 text-xs">
+              <div className="flex items-center gap-2 text-dark-400 text-xs">
                 <MapPin size={12} />
                 <span>Brazzaville, République du Congo</span>
               </div>
-              <div className="flex items-center gap-2 text-dark-500 text-xs">
+              <div className="flex items-center gap-2 text-dark-400 text-xs">
                 <Mail size={12} />
                 <a
                   href="mailto:ngassakialex20@gmail.com"
-                  className="hover:text-[#00E5FF] transition-colors"
+                  className="press inline-block hover:text-[#00E5FF] transition-colors"
                 >
                   ngassakialex20@gmail.com
                 </a>
               </div>
-              <div className="flex items-center gap-2 text-dark-500 text-xs">
+              <div className="flex items-center gap-2 text-dark-400 text-xs">
                 <Phone size={12} />
                 <span>+242 06 767 66 43</span>
               </div>
@@ -77,11 +83,18 @@ export default function Footer() {
                 {category}
               </h4>
               <ul className="space-y-2.5">
-                {links.map((link) => (
-                  <li key={link}>
-                    <p className="text-dark-500 hover:text-dark-200 text-sm font-body transition-colors duration-200">
-                      {link}
-                    </p>
+                {links.map(({ label, href }) => (
+                  <li key={label}>
+                    {href ? (
+                      <a
+                        href={href}
+                        className="press inline-block text-dark-400 hover:text-dark-50 text-sm font-body transition-colors duration-200"
+                      >
+                        {label}
+                      </a>
+                    ) : (
+                      <p className="text-dark-400 text-sm font-body">{label}</p>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -91,18 +104,9 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-white/5 gap-4">
-          <div className="flex gap-3">
-            <p className="text-dark-600 text-xs font-body text-center md:text-left">
-              © {new Date().getFullYear()} M I R A. Tous droits réservés.
-            </p>
-            <p className="text-dark-600 text-xs font-body text-center md:text-left">
-              {" "}
-              |{" "}
-            </p>
-            <p className="text-dark-600 text-xs font-body text-center md:text-left">
-              RCCM: ...
-            </p>
-          </div>
+          <p className="text-dark-400 text-xs font-body text-center md:text-left">
+            © {new Date().getFullYear()} M I R A. Tous droits réservés.
+          </p>
 
           <div className="flex items-center gap-10">
             {Object.entries(reseaux).map(([social, link]) => {
@@ -115,7 +119,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   aria-label={social}
                   title={social}
-                  className="text-dark-600 hover:text-[#00E5FF] transition-colors duration-200 hover:-translate-y-0.5"
+                  className="press text-dark-400 hover:text-[#00E5FF] transition-colors duration-200"
                 >
                   <Icon size={18} />
                 </a>

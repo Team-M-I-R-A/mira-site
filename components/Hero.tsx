@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import { APP_URL } from "@/lib/config";
@@ -8,35 +8,32 @@ import { APP_URL } from "@/lib/config";
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
 
-  const [particles, setParticles] = useState<
-    { left: string; duration: string; delay: string }[]
-  >([]);
-
   useEffect(() => {
-    setParticles(
-      Array.from({ length: 12 }, () => ({
-        left: `${Math.random() * 100}%`,
-        duration: `${8 + Math.random() * 12}s`,
-        delay: `${Math.random() * 8}s`,
-      })),
-    );
+    // Parallaxe réservée à la souris et coupée si le mouvement réduit est demandé
+    const canAnimate = window.matchMedia(
+      "(pointer: fine) and (prefers-reduced-motion: no-preference)",
+    ).matches;
+    const blobs =
+      heroRef.current?.querySelectorAll<HTMLElement>(".parallax-blob");
+    if (!canAnimate || !blobs) return;
 
-    // Parallax on mouse move
-    const handleMouseMove = (e: MouseEvent) => {
-      const el = heroRef.current;
-      if (!el) return;
-      const { clientX, clientY } = e;
-      const { innerWidth, innerHeight } = window;
-      const x = (clientX / innerWidth - 0.5) * 30;
-      const y = (clientY / innerHeight - 0.5) * 30;
-      const blobs = el.querySelectorAll<HTMLElement>(".parallax-blob");
-      blobs.forEach((blob, i) => {
-        const factor = (i + 1) * 0.4;
-        blob.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
+    let frame = 0;
+    const handleMouseMove = ({ clientX, clientY }: MouseEvent) => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const x = (clientX / window.innerWidth - 0.5) * 30;
+        const y = (clientY / window.innerHeight - 0.5) * 30;
+        blobs.forEach((blob, i) => {
+          const factor = (i + 1) * 0.4;
+          blob.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
+        });
       });
     };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      cancelAnimationFrame(frame);
+    };
   }, []);
 
   return (
@@ -60,19 +57,6 @@ export default function Hero() {
             backgroundSize: "60px 60px",
           }}
         />
-
-        {/* Floating particles */}
-        {particles.map((p, i) => (
-          <div
-            key={i}
-            className="particle absolute w-1 h-1 rounded-full bg-[#00E5FF]"
-            style={{
-              left: p.left,
-              animationDuration: p.duration,
-              animationDelay: p.delay,
-            }}
-          />
-        ))}
       </div>
 
       <div className="relative max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center py-5">
@@ -83,7 +67,7 @@ export default function Hero() {
             className="animate-fade-up opacity-0 stagger-2"
             style={{ animationFillMode: "forwards" }}
           >
-            <h1 className="font-display text-6xl lg:text-7xl xl:text-8xl font-light leading-[0.95] tracking-tight">
+            <h1 className="font-display text-[clamp(3.75rem,2.82rem+3.98vw,6rem)] font-light leading-[0.95] tracking-tight">
               <span className="gradient-text-white">Trouvez votre</span>
               <br />
               <em className="not-italic gradient-text">chez-vous</em>
@@ -97,10 +81,10 @@ export default function Hero() {
             className="text-dark-300 text-lg font-body font-light leading-relaxed max-w-lg animate-fade-up opacity-0 stagger-3"
             style={{ animationFillMode: "forwards" }}
           >
-            La première plateforme de location de logements adaptée aux réalités
-            congolaises. Payez en toute sécurité via{" "}
-            <span className="text-[#00E5FF] font-medium">Mobile Money</span> —
-            simple, rapide et sans tracas.
+            Réservez votre logement à Brazzaville et Pointe-Noire en toute
+            tranquillité. Votre argent reste protégé jusqu’à la confirmation de
+            votre séjour, et vous payez par{" "}
+            <span className="text-[#00E5FF] font-medium">Mobile Money</span>.
           </p>
 
           {/* CTA */}
@@ -110,18 +94,14 @@ export default function Hero() {
           >
             <a
               href={APP_URL}
-              className="group relative overflow-hidden inline-flex items-center gap-2 px-7 py-4 rounded-2xl bg-gradient-to-r from-[#2233DD] via-[#1A6BFF] to-[#00E5FF] text-white font-medium shadow-glow hover:shadow-glow-lg transition-all duration-300 hover:-translate-y-1"
+              className="group press relative inline-flex items-center gap-2 px-7 py-4 rounded-2xl bg-gradient-to-r from-[#2233DD] to-[#1A6BFF] text-white font-medium shadow-glow hover:shadow-glow-lg transition-[transform,box-shadow] duration-300 hover:-translate-y-1"
             >
-              <span className="relative z-10">Ouvrir l&apos;application</span>
+              <span>Ouvrir MIRA</span>
               <ArrowUpRight
                 size={16}
-                className="relative z-10 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+                className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
               />
-              <div className="absolute inset-0 shimmer-btn" />
             </a>
-            <p className="mt-3 text-sm font-body text-dark-400">
-              Disponible à Brazzaville et Pointe-Noire.
-            </p>
           </div>
         </div>
 
@@ -130,7 +110,7 @@ export default function Hero() {
           className="flex justify-end animate-fade-in opacity-0 stagger-3"
           style={{ animationFillMode: "forwards" }}
         >
-          <div className="w-full max-w-[250px] overflow-hidden rounded-[28px] border border-white/10 shadow-md">
+          <div className="w-full max-w-[250px] overflow-hidden rounded-[28px] shadow-md">
             <Image
               src="/screenshots/mockups_home.png"
               alt="Écran d’accueil de l’application MIRA : appartements meublés à Brazzaville et Pointe-Noire, avec leur prix en FCFA"
@@ -142,14 +122,6 @@ export default function Hero() {
             />
           </div>
         </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-2 animate-bounce-subtle opacity-60">
-        <span className="text-xs text-dark-400 font-mono tracking-widest uppercase">
-          Scroll
-        </span>
-        <ArrowDown size={14} className="text-dark-400" />
       </div>
     </section>
   );

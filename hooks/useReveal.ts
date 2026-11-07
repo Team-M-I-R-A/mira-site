@@ -6,7 +6,7 @@ import { useEffect, useRef } from 'react'
  * useReveal — attaches an IntersectionObserver to all `.reveal` elements
  * inside `containerRef`. Works reliably on Safari iOS:
  *  - Uses threshold: 0 (not 0.1) to fire as soon as 1px is visible
- *  - Applies a small delay so Safari has finished layout before observing
+ *  - Waits for the next frame so Safari has finished layout before observing
  *  - Falls back to making all elements visible if IntersectionObserver is absent
  */
 export function useReveal() {
@@ -25,8 +25,8 @@ export function useReveal() {
 
     let observer: IntersectionObserver
 
-    // Delay gives Safari iOS time to finish the first paint / layout pass
-    const timer = setTimeout(() => {
+    // Next frame gives Safari iOS time to finish the first paint / layout pass
+    const frame = requestAnimationFrame(() => {
       observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
@@ -44,10 +44,10 @@ export function useReveal() {
 
       container.querySelectorAll<HTMLElement>('.reveal')
         .forEach((el) => observer.observe(el))
-    }, 300) // Safari iOS a besoin de plus de temps pour finaliser le layout
+    })
 
     return () => {
-      clearTimeout(timer)
+      cancelAnimationFrame(frame)
       observer?.disconnect()
     }
   }, [])

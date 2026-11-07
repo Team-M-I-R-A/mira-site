@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useState, type KeyboardEvent, type UIEvent } from "react";
 
 type Step = {
@@ -11,20 +12,27 @@ type Step = {
 
 type StepShowcaseProps = {
   steps: Step[];
+  withFrame?: boolean;
 };
 
 function PhoneFrame({
   steps,
   active,
+  withFrame = true,
   className = "",
 }: {
   steps: Step[];
   active: number;
+  withFrame?: boolean;
   className?: string;
 }) {
   return (
     <div
-      className={`relative aspect-[1080/2340] w-full overflow-hidden rounded-[2rem] border border-white/10 bg-dark-900 shadow-xl shadow-black/10 ${className}`}
+      className={`relative w-full ${
+        withFrame
+          ? "aspect-[1080/2340] overflow-hidden rounded-[2rem] border border-white/10 bg-dark-900 shadow-xl shadow-black/10"
+          : "aspect-[1463/3031]"
+      } ${className}`}
     >
       {steps.map((step, index) => (
         <Image
@@ -34,16 +42,22 @@ function PhoneFrame({
           fill
           sizes="(min-width: 768px) 280px, 240px"
           aria-hidden={index !== active}
-          className={`object-cover transition-opacity duration-300 motion-reduce:transition-none ${
-            index === active ? "opacity-100" : "opacity-0"
-          }`}
+          className={`transition-opacity duration-300 motion-reduce:transition-none ${
+            withFrame ? "object-cover" : "object-contain"
+          } ${index === active ? "opacity-100" : "opacity-0"}`}
         />
       ))}
     </div>
   );
 }
 
-export default function StepShowcase({ steps }: StepShowcaseProps) {
+const navButton =
+  "flex h-11 w-11 shrink-0 touch-manipulation items-center justify-center rounded-full border border-[#00798f]/40 text-[#00798f] transition-colors duration-200 hover:bg-[#00798f]/10 disabled:opacity-30 disabled:hover:bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00798f]";
+
+export default function StepShowcase({
+  steps,
+  withFrame = true,
+}: StepShowcaseProps) {
   const [active, setActive] = useState(0);
   const stepRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -64,9 +78,16 @@ export default function StepShowcase({ steps }: StepShowcaseProps) {
     }
   }
 
+  function getSlideWidth(scroller: HTMLDivElement | null) {
+    const first = scroller?.firstElementChild as HTMLElement | null;
+    return first?.offsetWidth ?? 0;
+  }
+
   function handleScroll(event: UIEvent<HTMLDivElement>) {
     const el = event.currentTarget;
-    const index = Math.round(el.scrollLeft / el.clientWidth);
+    const width = getSlideWidth(el);
+    if (!width) return;
+    const index = Math.round(el.scrollLeft / width);
     if (index !== active && index >= 0 && index < steps.length) {
       setActive(index);
     }
@@ -74,8 +95,15 @@ export default function StepShowcase({ steps }: StepShowcaseProps) {
 
   function scrollToSlide(index: number) {
     const el = scrollerRef.current;
-    if (!el) return;
-    el.scrollTo({ left: index * el.clientWidth, behavior: "smooth" });
+    const width = getSlideWidth(el);
+    if (!el || !width) return;
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    el.scrollTo({
+      left: index * width,
+      behavior: reduceMotion ? "auto" : "smooth",
+    });
     setActive(index);
   }
 
@@ -127,65 +155,95 @@ export default function StepShowcase({ steps }: StepShowcaseProps) {
           })}
         </div>
 
-        <PhoneFrame steps={steps} active={active} />
+        <PhoneFrame steps={steps} active={active} withFrame={withFrame} />
       </div>
 
-      {/* Mobile : carrousel à défilement horizontal + points */}
+      {/* Mobile : carrousel avec aperçu de l'étape suivante, compteur, flèches et points */}
       <div className="md:hidden">
         <div
           ref={scrollerRef}
           onScroll={handleScroll}
-          className="flex snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="flex snap-x snap-mandatory overflow-x-auto px-[16%] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          {steps.map((step) => (
+          {steps.map((step, index) => (
             <div
               key={step.src}
-              className="flex w-full shrink-0 snap-center justify-center"
+              className={`w-[68%] shrink-0 snap-center px-1.5 transition-opacity duration-300 motion-reduce:transition-none ${
+                index === active ? "opacity-100" : "opacity-50"
+              }`}
             >
-              <div className="w-[240px]">
-                <div className="relative aspect-[1080/2340] w-full overflow-hidden rounded-[2rem] border border-white/10 bg-dark-900 shadow-2xl shadow-black/40">
-                  <Image
-                    src={step.src}
-                    alt={step.alt}
-                    fill
-                    sizes="240px"
-                    className="object-cover"
-                  />
-                </div>
+              <div
+                className={`relative w-full ${
+                  withFrame
+                    ? "aspect-[1080/2340] overflow-hidden rounded-[1.75rem] border border-white/10 bg-dark-900 shadow-xl shadow-black/10"
+                    : "aspect-[1463/3031]"
+                }`}
+              >
+                <Image
+                  src={step.src}
+                  alt={step.alt}
+                  fill
+                  sizes="260px"
+                  className={withFrame ? "object-cover" : "object-contain"}
+                />
               </div>
             </div>
           ))}
         </div>
 
-        <div className="mt-8 flex min-h-[4.5rem] items-start justify-center gap-3 px-6 text-center">
-          <span className="mt-0.5 font-mono text-xs tracking-widest text-[#00E5FF]">
-            {String(active + 1).padStart(2, "0")}
-          </span>
+        <div className="mt-8 px-6 text-center">
+          <p className="mb-2 text-xs font-semibold tracking-wide text-[#00798f]">
+            Étape {active + 1} sur {steps.length}
+          </p>
           <p
             aria-live="polite"
-            className="max-w-xs text-pretty text-base font-light leading-snug text-white"
+            className="mx-auto min-h-[4rem] max-w-xs text-pretty text-base font-light leading-snug text-white"
           >
             {steps[active].title}
           </p>
         </div>
 
-        <div className="mt-2 flex items-center justify-center">
-          {steps.map((step, index) => (
-            <button
-              key={step.title}
-              type="button"
-              onClick={() => scrollToSlide(index)}
-              aria-label={`Étape ${index + 1}`}
-              aria-current={index === active ? "step" : undefined}
-              className="flex h-11 w-8 touch-manipulation items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00798f]"
-            >
-              <span
-                className={`h-2 rounded-full transition-all duration-200 motion-reduce:transition-none ${
-                  index === active ? "w-6 bg-[#00E5FF]" : "w-2 bg-white/20"
-                }`}
-              />
-            </button>
-          ))}
+        <div className="mt-2 flex items-center justify-center gap-3">
+          <button
+            type="button"
+            onClick={() => scrollToSlide(active - 1)}
+            disabled={active === 0}
+            aria-label="Étape précédente"
+            className={navButton}
+          >
+            <ChevronLeft size={20} aria-hidden="true" />
+          </button>
+
+          <div className="flex items-center">
+            {steps.map((step, index) => (
+              <button
+                key={step.title}
+                type="button"
+                onClick={() => scrollToSlide(index)}
+                aria-label={`Aller à l’étape ${index + 1}`}
+                aria-current={index === active ? "step" : undefined}
+                className="flex h-11 w-8 touch-manipulation items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00798f]"
+              >
+                <span
+                  className={`h-2.5 rounded-full transition-all duration-200 motion-reduce:transition-none ${
+                    index === active
+                      ? "w-7 bg-[#00798f]"
+                      : "w-2.5 bg-[#00798f]/30"
+                  }`}
+                />
+              </button>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => scrollToSlide(active + 1)}
+            disabled={active === steps.length - 1}
+            aria-label="Étape suivante"
+            className={navButton}
+          >
+            <ChevronRight size={20} aria-hidden="true" />
+          </button>
         </div>
       </div>
     </>
