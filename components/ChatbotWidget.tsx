@@ -4,19 +4,20 @@ import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { MessageCircle, X, Send, ArrowRight, BadgeCheck } from 'lucide-react'
 import { APP_URL } from '@/lib/config'
+import { containsTerm, normalize } from '@/lib/chatbot/text'
 
 const WELCOME_MESSAGE = {
   role: 'assistant',
   content:
-    'Bonjour 👋 Je suis l\'assistant M I R A. Une question sur les logements, les paiements Mobile Money ou l\'inscription ?',
+    'Bonjour 👋 Je suis l\'assistant M I R A. Posez-moi vos questions sur les réservations, les paiements Mobile Money, les remboursements ou la protection de vos données.',
 }
 
 
 const QUICK_REPLIES = [
-  'Comment ça marche ?',
-  'Payer avec MTN MoMo',
-  'Logements disponibles',
-  'Contacter le support',
+  'Remboursement & annulation',
+  'Payer avec Mobile Money',
+  'Devenir hôte',
+  'Protéger mes données',
 ]
 
 type LocalReply = {
@@ -149,7 +150,7 @@ const LOCAL_REPLIES: FaqIntent[] = [
       'location',
     ],
     content:
-      'Plus de 2 000 logements vérifiés à Brazzaville, Pointe-Noire, Dolisie et partout au Congo. 🏠',
+      "MIRA référence des logements à Brazzaville, Pointe-Noire et partout au Congo. Les prix et les disponibilités à jour sont consultables dans l'application. 🏠",
     href: APP_URL,
     linkLabel: "Ouvrir MIRA",
   },
@@ -163,6 +164,9 @@ const LOCAL_REPLIES: FaqIntent[] = [
       'louer mon bien',
       'je suis proprietaire',
       'proprietaire d un logement',
+      'devenir hote',
+      'devenir proprietaire',
+      'mettre mon bien en location',
     ],
     keywords: ['proprietaire', 'proprietaires', 'publier', 'annonce', 'annonces'],
     content:
@@ -181,11 +185,10 @@ const LOCAL_REPLIES: FaqIntent[] = [
       'comment payer',
       'payer avec',
       'paiement mobile',
-      'paiement securise',
     ],
     keywords: ['payer', 'paiement', 'paiements', 'momo', 'mtn', 'airtel', 'money'],
     content:
-      "M I R A accepte MTN Mobile Money et Airtel Money. Votre argent est sécurisé jusqu'à confirmation. 💳",
+      "MIRA accepte MTN Mobile Money (MTN MoMo) et Airtel Money. Le paiement est confirmé par l'opérateur avant la validation de votre réservation. 💳",
     href: '#payment',
     linkLabel: 'En savoir plus sur les paiements',
   },
@@ -221,9 +224,49 @@ const LOCAL_REPLIES: FaqIntent[] = [
       'abonnement',
     ],
     content:
-      "L'utilisation de M I R A est gratuite pour les utilisateurs. Les prix des logements varient selon le logement et la ville : ouvrez l'application pour les découvrir. 💰",
+      "La consultation et l'inscription sont gratuites. Lors d'une réservation, MIRA perçoit une commission de 10 % sur le montant payé ; le reste revient à l'hôte. Le taux et la répartition sont fixés à la création de la réservation. 💰",
     href: APP_URL,
     linkLabel: "Ouvrir MIRA",
+  },
+  {
+    phrases: [
+      'remboursement',
+      'demande de remboursement',
+      'me faire rembourser',
+      'etre rembourse',
+      'remboursement total',
+      'annuler ma reservation',
+      'annulation de reservation',
+      'annuler le sejour',
+      'comment annuler',
+    ],
+    keywords: [
+      'rembourse',
+      'remboursement',
+      'rembourser',
+      'annulation',
+      'annuler',
+    ],
+    content:
+      "Vous pouvez annuler jusqu'au début du séjour, tant que vous n'avez pas confirmé votre arrivée. Si la réservation a été créée un autre jour que le début du séjour, le remboursement est automatique à 100 %. Si elle a été créée le jour même, notre équipe examine la demande : le remboursement peut être total, partiel ou nul selon la situation. Le remboursement part sous 24 h vers le numéro Mobile Money utilisé pour payer, puis l'opérateur peut prendre jusqu'à 48 h. 🏠",
+    href: '/policies/remboursement',
+    linkLabel: 'Lire la politique de remboursement',
+  },
+  {
+    phrases: [
+      'ouvrir un litige',
+      'faire un litige',
+      'litige',
+      'sejour pose probleme',
+      'probleme dans le logement',
+      'logement insalubre',
+      'logement dangereux',
+    ],
+    keywords: ['litige', 'probleme', 'insalubre', 'dangereux'],
+    content:
+      "Après l'arrivée, l'annulation n'est plus possible. Vous pouvez ouvrir un litige depuis l'application, dès l'arrivée et jusqu'à 24 h après la fin du séjour. Les versements à l'hôte sont suspendus, il dispose de 24 h pour répondre, et notre équipe vise une décision sous 48 h. Le remboursement éventuel est ensuite envoyé sous 24 h. ⚖️",
+    href: '/policies/remboursement',
+    linkLabel: 'Lire la politique des litiges',
   },
   {
     phrases: [
@@ -231,11 +274,12 @@ const LOCAL_REPLIES: FaqIntent[] = [
       'est ce securise',
       'c est fiable',
       'est ce fiable',
-      'en cas de probleme',
-      'demande de remboursement',
-      'me faire rembourser',
-      'etre rembourse',
-      'remboursement total',
+      'politique de securite',
+      'mes donnees sont elles protegees',
+      'comment protegez vous',
+      'en cas de fraude',
+      'arnaque',
+      'piratage',
     ],
     keywords: [
       'securite',
@@ -246,16 +290,13 @@ const LOCAL_REPLIES: FaqIntent[] = [
       'arnaque',
       'garantie',
       'garanti',
-      'rembourse',
-      'remboursement',
-      'rembourser',
-      'litige',
+      'fraude',
       'escroquerie',
     ],
     content:
-      "Chaque paiement est protégé jusqu'à confirmation de votre séjour. En cas de problème, vous êtes remboursé intégralement si votre demande est faite dans les 24 h suivant le paiement. 🔒",
-    href: '#payment',
-    linkLabel: 'Voir nos garanties',
+      "Les paiements passent par MTN Mobile Money et Airtel Money. MIRA ne stocke pas les informations sensibles de vos comptes Mobile Money, masque les numéros dans les notifications et trace les actions de son équipe. Un changement de numéro de versement d'un hôte bloque ses versements pendant 24 h. 🔒",
+    href: '/policies/security',
+    linkLabel: 'Lire la politique de sécurité',
   },
   {
     phrases: [
@@ -265,8 +306,6 @@ const LOCAL_REPLIES: FaqIntent[] = [
       'etre informe',
       'me notifier',
       'me prevenir',
-      'comment s inscrire',
-      's inscrire',
       'rejoindre mira',
       'date de lancement',
       'quand sort',
@@ -286,10 +325,7 @@ const LOCAL_REPLIES: FaqIntent[] = [
       'application disponible',
     ],
     keywords: [
-      'inscription',
-      'inscrire',
       'attente',
-      'rejoindre',
       'lancement',
       'beta',
       'notifie',
@@ -297,7 +333,7 @@ const LOCAL_REPLIES: FaqIntent[] = [
       'notification',
     ],
     content:
-      "Bonne nouvelle : l'application M I R A est disponible dès maintenant 🚀 Ouvrez-la depuis votre navigateur pour créer votre compte et commencer à chercher votre logement.",
+      "Bonne nouvelle : MIRA est accessible dès maintenant en ligne 🚀 Ouvrez l'application depuis votre navigateur pour créer votre compte et consulter les logements disponibles.",
     href: APP_URL,
     linkLabel: "Ouvrir MIRA",
   },
@@ -348,35 +384,121 @@ const LOCAL_REPLIES: FaqIntent[] = [
       'assistance',
     ],
     content:
-      "Vous pouvez joindre l'équipe M I R A par e-mail à ngassakialex20@gmail.com ou par téléphone au +242 04 017 76 47. Nous vous répondrons avec plaisir ! 📩",
+      "Vous pouvez joindre l'équipe MIRA par e-mail à ngassakialex20@gmail.com ou par téléphone au +242 06 767 66 43. Le centre d'aide et toutes les politiques sont aussi disponibles sur /policies. 📩",
     href: 'mailto:ngassakialex20@gmail.com',
     linkLabel: 'Nous écrire',
   },
+  {
+    phrases: [
+      'proteger mes donnees',
+      'donnees personnelles',
+      'vie privee',
+      'vendez mes donnees',
+      'partagez mes donnees',
+      'cookies',
+      'informations personnelles',
+    ],
+    keywords: ['confidentialite', 'privee', 'cookies', 'donnees'],
+    content:
+      "MIRA collecte votre nom, vos coordonnées, vos informations de compte, de réservation et de paiement, ainsi que des données techniques. Elles servent à gérer les réservations, les paiements, le support et la prévention de la fraude, et ne sont jamais vendues. 🔐",
+    href: '/policies/confidentialite',
+    linkLabel: 'Lire la politique de confidentialité',
+  },
+  {
+    phrases: [
+      'mes droits',
+      'droit d acces',
+      'droit de rectification',
+      'droit de suppression',
+      'supprimer mes donnees',
+      'corriger mes donnees',
+      'droit d opposition',
+      'limitation du traitement',
+      'exercer mes droits',
+    ],
+    keywords: ['droits', 'rectification', 'opposition', 'suppression'],
+    content:
+      "Vous pouvez demander l'accès à vos données, leur rectification, leur suppression, la limitation d'un traitement ou vous y opposer. Écrivez à ngassakialex20@gmail.com : une réponse est généralement apportée sous 30 jours, et une preuve d'identité peut être demandée pour les demandes sensibles. 📩",
+    href: '/policies/vos-droits',
+    linkLabel: 'Lire vos droits',
+  },
+  {
+    phrases: [
+      'duree de conservation',
+      'combien de temps conservez',
+      'combien de temps gardez',
+      'conservez mes donnees',
+      'conservation des donnees',
+    ],
+    keywords: ['conservation', 'conserve', 'conservez', 'duree'],
+    content:
+      "Vos données de compte sont conservées tant que le compte est actif, puis jusqu'à 3 ans après sa suppression. Les réservations et transactions sont conservées au moins 5 ans (obligations comptables), les échanges avec le support 2 ans, et les logs techniques 12 mois maximum. 🗂️",
+    href: '/policies/conservation-data',
+    linkLabel: 'Lire la politique de conservation',
+  },
+  {
+    phrases: [
+      'versement a l hote',
+      'versement de l hote',
+      'quand suis je paye',
+      'quand est ce que je suis paye',
+      'paiement de l hote',
+      'versement proprietaire',
+      'quelle commission',
+      'combien prenez vous',
+    ],
+    keywords: ['versement', 'versements', 'commission', 'paye', 'payout'],
+    content:
+      "MIRA prélève une commission de 10 % sur le montant payé ; le reste revient à l'hôte. Le versement est automatique sur son numéro Mobile Money, sans portefeuille à retirer. Séjour de 7 nuits ou moins : un seul versement dès que le client confirme son arrivée, au plus tard 24 h après le début prévu. Au-delà : un versement par tranche de 7 nuits. Un litige suspend les versements. 💸",
+    href: '/policies/utilisation',
+    linkLabel: "Lire les conditions d'utilisation",
+  },
+  {
+    phrases: [
+      'regles des annonces',
+      'conformite des annonces',
+      'photos du logement',
+      'annonce trompeuse',
+      'fausse annonce',
+      'obligations de l hote',
+    ],
+    keywords: ['annonce', 'annonces', 'photos', 'conformite'],
+    content:
+      "En publiant une annonce, l'hôte s'engage à donner des informations exactes et à utiliser des photos fidèles au logement. Une annonce inexacte ou trompeuse peut être suspendue ou retirée, et le compte de l'hôte suspendu en cas de récidive ou de fraude. 🏠",
+    href: '/policies/annonces',
+    linkLabel: 'Lire la politique des annonces',
+  },
+  {
+    phrases: [
+      'creer un compte',
+      'comment s inscrire',
+      's inscrire',
+      'suspendre mon compte',
+      'mon compte',
+      'mes identifiants',
+      'mot de passe',
+    ],
+    keywords: ['compte', 'inscription', 'inscrire', 'identifiants', 'mot de passe'],
+    content:
+      "La création d'un compte vous permet de réserver et de gérer vos informations. Utilisez des informations exactes, gardez vos identifiants confidentiels et signalez toute utilisation suspecte. Un compte frauduleux peut être suspendu. 👤",
+    href: '/policies/utilisation',
+    linkLabel: "Lire les conditions d'utilisation",
+  },
+  {
+    phrases: [
+      'devenir partenaire',
+      'partenariat',
+      'partenaire',
+      'agence immobiliere',
+      'travailler avec mira',
+    ],
+    keywords: ['partenaire', 'partenariat', 'partenaires', 'agence'],
+    content:
+      "Vous êtes une agence, un propriétaire multi-biens ou une entreprise ? Écrivez à ngassakialex20@gmail.com avec l'objet « Partenariat avec MIRA » et décrivez votre projet. 🤝",
+    href: 'mailto:ngassakialex20@gmail.com?subject=Demande%20de%20partenariat%20avec%20MIRA',
+    linkLabel: 'Nous écrire',
+  },
 ]
-
-/** Minuscules, sans accents ni apostrophes, pour comparer les intentions. */
-function normalize(text: string) {
-  return text
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/['’`]/g, ' ')
-    .replace(/[^a-z0-9\s-]/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-}
-
-function escapeRegExp(value: string) {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-}
-
-/** Vrai uniquement si le terme est présent comme mot/expression entière. */
-function containsTerm(text: string, term: string) {
-  const pattern = new RegExp(
-    `(^|[^a-z0-9])${escapeRegExp(term)}([^a-z0-9]|$)`,
-  )
-  return pattern.test(text)
-}
 
 function scoreIntent(text: string, intent: FaqIntent) {
   let score = 0
@@ -448,20 +570,34 @@ export default function ChatbotWidget() {
       return 
     }
 
-    // Sinon → API
+    // Sinon → API, avec l'historique pour permettre les questions de suivi
     setTyping(true)
     try {
+      const history = [...messages, userMessage]
+        .slice(-8)
+        .map(({ role, content }) => ({ role, content }))
+
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text }),
+        body: JSON.stringify({ messages: history }),
       })
       const data = await res.json()
       if (!res.ok || !data.response) throw new Error(`Réponse invalide (${res.status})`)
-      setMessages(prev => [...prev, { role: 'assistant', content: data.response }])
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: data.response,
+        href: data.href,
+        linkLabel: data.linkLabel,
+      }])
     } catch (err) {
       console.error('Erreur lors du POST: ', err)
-      setMessages(prev => [...prev, { role: 'assistant', content: 'Une erreur est survenue, réessayez.' }])
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: "Je n'arrive pas à répondre pour le moment. Réessayez dans un instant, ou écrivez-nous : le centre d'aide et les politiques restent disponibles.",
+        href: '/policies',
+        linkLabel: "Ouvrir le centre d'aide",
+      }])
     } finally {
       setTyping(false)
     }
@@ -620,7 +756,7 @@ export default function ChatbotWidget() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              maxLength={200}
+              maxLength={500}
               autoComplete="off"
               autoCorrect="off"
               spellCheck={false}

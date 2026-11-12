@@ -42,9 +42,11 @@ function PhoneFrame({
           fill
           sizes="(min-width: 768px) 280px, 240px"
           aria-hidden={index !== active}
-          className={`transition-opacity duration-300 motion-reduce:transition-none ${
-            withFrame ? "object-cover" : "object-contain"
-          } ${index === active ? "opacity-100" : "opacity-0"}`}
+          className={`object-contain transition-[opacity,transform] duration-300 motion-reduce:transition-none ${
+            index === active
+              ? "scale-100 opacity-100"
+              : "scale-[1.015] opacity-0"
+          }`}
         />
       ))}
     </div>
@@ -155,7 +157,12 @@ export default function StepShowcase({
           })}
         </div>
 
-        <PhoneFrame steps={steps} active={active} withFrame={withFrame} />
+        <PhoneFrame
+          steps={steps}
+          active={active}
+          withFrame={withFrame}
+          className="install-phone"
+        />
       </div>
 
       {/* Mobile : carrousel avec aperçu de l'étape suivante, compteur, flèches et points */}
@@ -184,7 +191,7 @@ export default function StepShowcase({
                   alt={step.alt}
                   fill
                   sizes="260px"
-                  className={withFrame ? "object-cover" : "object-contain"}
+                  className="object-contain"
                 />
               </div>
             </div>
@@ -199,7 +206,9 @@ export default function StepShowcase({
             aria-live="polite"
             className="mx-auto min-h-[4rem] max-w-xs text-pretty text-base font-light leading-snug text-white"
           >
-            {steps[active].title}
+            <span key={active} className="step-swap block">
+              {steps[active].title}
+            </span>
           </p>
         </div>
 

@@ -19,7 +19,7 @@ const tabClass =
   "press flex-1 touch-manipulation rounded-full px-4 py-2.5 text-sm font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00798f] focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950";
 
 const panelClass =
-  "rounded-3xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00798f]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950";
+  "install-panel rounded-3xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00798f]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950";
 
 export default function InstallTabs({
   defaultPlatform,

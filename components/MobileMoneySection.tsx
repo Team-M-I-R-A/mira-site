@@ -1,21 +1,8 @@
 "use client";
 
 import { useReveal } from "@/hooks/useReveal";
-import { Shield, Zap, Lock, CheckCircle } from "lucide-react";
+import { CheckCircle2, Shield, ShieldCheck, Zap } from "lucide-react";
 import Image from "next/image";
-
-const providers = [
-  {
-    name: "MTN Mobile Money",
-    logo: "/paiements/mtn.png",
-    market: "65% du marché",
-  },
-  {
-    name: "Airtel Money",
-    logo: "/paiements/airtel.png",
-    market: "35% du marché",
-  },
-];
 
 const benefits = [
   {
@@ -23,6 +10,23 @@ const benefits = [
     text: "Votre argent est protégé jusqu’à la confirmation de votre séjour, et remboursé en cas de problème.",
   },
   { icon: Zap, text: "Confirmation instantanée par SMS" },
+];
+
+const providers = [
+  {
+    name: "MTN Mobile Money",
+    description: "Paiement mobile",
+    logo: "/paiements/mtn-mark.png",
+    tile: "#004F71",
+    alt: "Logo MTN Mobile Money",
+  },
+  {
+    name: "Airtel Money",
+    description: "Paiement mobile",
+    logo: "/paiements/airtel.png",
+    tile: "#E30613",
+    alt: "Logo Airtel Money",
+  },
 ];
 
 export default function MobileMoneySection() {
@@ -52,66 +56,71 @@ export default function MobileMoneySection() {
 
         {/* Main Grid */}
         <div className="grid items-center gap-16 lg:grid-cols-2">
-          {/* Left — Visual */}
+          {/* Left — Mobile Money Experience */}
           <div className="relative order-2 flex justify-center reveal lg:order-1">
-            <div className="relative w-full max-w-md">
-              {/* Main card */}
-              <div className="relative overflow-hidden rounded-3xl border border-[#0a1320] glass-warm p-8">
-                {/* Background decoration */}
-                <div className="absolute inset-0 overflow-hidden">
-                  <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#0a1320]/10 blur-3xl" />
+            <div className="relative w-full max-w-[440px]">
+              {/* Ambient light — a single soft halo behind the whole visual */}
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0"
+              >
+                <div className="absolute left-1/2 top-1/2 h-[130%] w-[130%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(26,107,255,0.16),rgba(255,190,0,0.08)_58%,transparent_78%)] blur-3xl" />
+              </div>
+
+              {/* Contact shadow */}
+              <div
+                aria-hidden="true"
+                className="absolute inset-x-[10%] bottom-[-6%] h-[16%] rounded-[50%] bg-slate-900/10 blur-3xl"
+              />
+
+              {/* Payment sheet */}
+              <div className="relative overflow-hidden rounded-[2rem] border border-white/90 bg-white/90 shadow-md backdrop-blur-xl">
+                <p className="mt-6 px-6 font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400 sm:px-7">
+                  Payez avec
+                </p>
+
+                {/* Providers */}
+                <div className="mt-3 space-y-2 px-3 pb-3 sm:px-4">
+                  {providers.map(({ name, description, logo, tile, alt }) => (
+                    <div
+                      key={name}
+                      className="flex items-center gap-3.5 rounded-2xl bg-slate-50 px-3 py-3"
+                    >
+                      <span
+                        className="relative block h-14 w-14 shrink-0 overflow-hidden rounded-2xl"
+                        style={{ backgroundColor: tile }}
+                      >
+                        <Image
+                          src={logo}
+                          alt={alt}
+                          width={56}
+                          height={56}
+                          sizes="56px"
+                          className="h-full w-full object-cover"
+                        />
+                      </span>
+
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-semibold text-slate-900">
+                          {name}
+                        </p>
+                        <p className="text-xs text-slate-500">{description}</p>
+                      </div>
+
+                      <span className="ml-auto flex shrink-0 items-center gap-1.5 text-[11px] font-semibold text-emerald-600">
+                        <CheckCircle2 className="h-4 w-4" strokeWidth={2.5} />
+                        Accepté
+                      </span>
+                    </div>
+                  ))}
                 </div>
 
-                <div className="relative z-10">
-                  {/* Header */}
-                  <div className="mb-8 flex items-center justify-between">
-                    <div>
-                      <p className="mb-1 font-mono text-xs text-dark-400">
-                        Paiement sécurisé
-                      </p>
-                      <h3 className="font-display text-2xl font-semibold text-white">
-                        Mobile Money
-                      </h3>
-                    </div>
-
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-r from-[#2233DD] via-[#1A6BFF] to-[#00E5FF] shadow-glow">
-                      <Lock size={20} className="text-white" />
-                    </div>
-                  </div>
-
-                  {/* Providers */}
-                  <div className="mb-8 space-y-3">
-                    {providers.map((provider) => (
-                      <div
-                        key={provider.name}
-                        className="flex cursor-default items-center justify-between rounded-xl border border-white/5 bg-white/3 p-4 transition-colors duration-300 hover:border-brand-500/20"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-white shadow-md sm:h-16 sm:w-16">
-                            <Image
-                              src={provider.logo}
-                              alt={`Logo ${provider.name}`}
-                              width={64}
-                              height={64}
-                              className="h-full w-full object-cover"
-                              unoptimized
-                            />
-                          </div>
-
-                          <div>
-                            <p className="text-sm font-medium text-white">
-                              {provider.name}
-                            </p>
-                            <p className="text-xs text-dark-400">
-                              {provider.market}
-                            </p>
-                          </div>
-                        </div>
-
-                        <CheckCircle size={16} className="text-green-400" />
-                      </div>
-                    ))}
-                  </div>
+                {/* Secure footer */}
+                <div className="flex items-center justify-center gap-2 border-t border-slate-900/5 bg-slate-50/80 px-6 py-3.5">
+                  <ShieldCheck className="h-4 w-4 text-emerald-600" />
+                  <p className="text-[11px] font-medium text-slate-500">
+                    Fonds protégés jusqu’à votre arrivée
+                  </p>
                 </div>
               </div>
             </div>

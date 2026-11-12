@@ -9,6 +9,9 @@
   --font-body: 'DM Sans';
   --font-mono: 'DM Mono';
 
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+
   --brand-orange: #00E5FF;
   --dark-50: 15 15 16;
   --dark-100: 30 30 32;
@@ -30,7 +33,7 @@
 }
 
 html {
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -43,7 +46,7 @@ body {
   font-family: var(--font-body), sans-serif;
   background-color: rgb(var(--dark-950));
   color: rgb(var(--dark-50));
-  overflow-x: hidden;
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -150,6 +153,118 @@ body {
     transform: none;
     -webkit-transition: none;
     transition: none;
+  }
+}
+
+/* ===== INSTALLER ===== */
+.install-aura {
+  -webkit-animation: installAura 9s var(--ease-in-out) infinite alternate;
+  animation: installAura 9s var(--ease-in-out) infinite alternate;
+}
+
+@-webkit-keyframes installAura {
+  from {
+    opacity: 0.55;
+    -webkit-transform: translate(-50%, -50%) scale(0.92);
+    transform: translate(-50%, -50%) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translate(-50%, -50%) scale(1.06);
+    transform: translate(-50%, -50%) scale(1.06);
+  }
+}
+@keyframes installAura {
+  from {
+    opacity: 0.55;
+    -webkit-transform: translate(-50%, -50%) scale(0.92);
+    transform: translate(-50%, -50%) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translate(-50%, -50%) scale(1.06);
+    transform: translate(-50%, -50%) scale(1.06);
+  }
+}
+
+.install-phone {
+  -webkit-animation: installFloat 7s var(--ease-in-out) infinite;
+  animation: installFloat 7s var(--ease-in-out) infinite;
+  will-change: transform;
+}
+
+@-webkit-keyframes installFloat {
+  0%,
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+  50% {
+    -webkit-transform: translateY(-10px);
+    transform: translateY(-10px);
+  }
+}
+@keyframes installFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.step-swap {
+  -webkit-animation: stepSwap 220ms var(--ease-out) both;
+  animation: stepSwap 220ms var(--ease-out) both;
+}
+
+@-webkit-keyframes stepSwap {
+  from {
+    opacity: 0;
+    -webkit-transform: translateY(6px);
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+}
+@keyframes stepSwap {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.install-panel {
+  -webkit-transition: opacity 260ms var(--ease-out), -webkit-transform 260ms var(--ease-out);
+  transition: opacity 260ms var(--ease-out), transform 260ms var(--ease-out);
+}
+
+@starting-style {
+  .install-panel:not([hidden]) {
+    opacity: 0;
+    -webkit-transform: translateY(10px);
+    transform: translateY(10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .install-aura,
+  .install-phone,
+  .step-swap {
+    -webkit-animation: none !important;
+    animation: none !important;
+  }
+  .install-panel {
+    -webkit-transition: none !important;
+    transition: none !important;
   }
 }
 

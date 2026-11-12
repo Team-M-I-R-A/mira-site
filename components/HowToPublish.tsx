@@ -1,4 +1,7 @@
+"use client";
+
 import { UserPlus, MapPin, ImagePlus, CalendarCheck } from "lucide-react";
+import { useReveal } from "@/hooks/useReveal";
 import { APP_URL } from "@/lib/config";
 
 const steps = [
@@ -37,8 +40,14 @@ const steps = [
 ];
 
 export default function HowToPublish() {
+  const sectionRef = useReveal();
+
   return (
-    <section id="publier" className="relative overflow-hidden py-32">
+    <section
+      id="publier"
+      ref={sectionRef as React.RefObject<HTMLElement>}
+      className="relative overflow-hidden py-32"
+    >
       {/* BG */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/2 top-1/2 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#0a1320] blur-[150px]" />
@@ -46,7 +55,7 @@ export default function HowToPublish() {
 
       <div className="relative mx-auto max-w-7xl px-6">
         {/* Header */}
-        <div className="mb-20 text-center">
+        <div className="reveal mb-20 text-center">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full glass-warm px-4 py-1.5">
             <span className="font-mono text-xs uppercase tracking-widest text-[#122f55]">
               Propriétaires
@@ -77,12 +86,13 @@ export default function HowToPublish() {
           </div>
 
           <ol className="grid list-none gap-8 lg:grid-cols-4">
-            {steps.map((step) => {
+            {steps.map((step, i) => {
               const Icon = step.icon;
               return (
                 <li
                   key={step.number}
-                  className="group relative text-center lg:text-left"
+                  className="reveal group relative text-center lg:text-left"
+                  style={{ transitionDelay: `${i * 0.15}s` }}
                 >
                   {/* Step number */}
                   <div className="relative mb-6 inline-block">
@@ -120,7 +130,10 @@ export default function HowToPublish() {
         </div>
 
         {/* CTA */}
-        <div className="mt-16 flex justify-center">
+        <div
+          className="reveal mt-16 flex justify-center"
+          style={{ transitionDelay: "0.6s" }}
+        >
           <a
             href={APP_URL}
             className="press inline-flex min-h-[48px] touch-manipulation items-center justify-center rounded-xl border border-white/10 px-7 py-3 text-center text-sm font-medium text-white transition-colors duration-200 hover:bg-dark-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00798f] focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"

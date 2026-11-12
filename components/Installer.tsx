@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { APP_SHARES_ORIGIN, APP_URL } from "@/lib/config";
+import Reveal from "./Reveal";
 import InstallButton from "./install/InstallButton";
 import InstallTabs from "./install/InstallTabs";
 import StepShowcase from "./install/StepShowcase";
@@ -103,9 +104,20 @@ export default async function Installer() {
   const defaultPlatform = getDefaultPlatform(userAgent);
 
   return (
-    <section id="installer" className="relative scroll-mt-24 py-24">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-14 text-center">
+    <section
+      id="installer"
+      className="relative scroll-mt-24 overflow-hidden py-24"
+    >
+      {/* Ambient halo — animated gently behind the install showcase */}
+      <div
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+        aria-hidden="true"
+      >
+        <div className="install-aura absolute left-1/2 top-1/2 h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#0a1320] blur-[130px]" />
+      </div>
+
+      <Reveal className="relative mx-auto max-w-7xl px-6">
+        <div className="reveal mb-14 text-center">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full glass-warm px-4 py-1.5">
             <span className="text-[#00E5FF] font-mono text-xs uppercase tracking-widest">
               Installer
@@ -122,12 +134,14 @@ export default async function Installer() {
           </p>
         </div>
 
-        <InstallTabs
-          defaultPlatform={defaultPlatform}
-          androidPanel={<AndroidTutorial />}
-          iosPanel={<IosTutorial />}
-        />
-      </div>
+        <div className="reveal" style={{ transitionDelay: "0.15s" }}>
+          <InstallTabs
+            defaultPlatform={defaultPlatform}
+            androidPanel={<AndroidTutorial />}
+            iosPanel={<IosTutorial />}
+          />
+        </div>
+      </Reveal>
     </section>
   );
 }

@@ -1,23 +1,31 @@
 import { MapPin, Mail, Phone } from "lucide-react";
 import Image from "next/image";
-import { APP_URL } from "@/lib/config";
+import Link from "next/link";
 import { socialIcons } from "./SocialIcons";
 
 const footerLinks: Record<string, { label: string; href?: string }[]> = {
   Produit: [
-    { label: "Comment ça marche", href: "#how-it-works" },
-    { label: "Sécurité", href: "#payment" },
-    { label: "Mobile Money", href: "#payment" },
+    { label: "Comment ça marche", href: "/#how-it-works" },
+    { label: "Sécurité", href: "/#payment" },
+    { label: "Mobile Money", href: "/#payment" },
   ],
-  Entreprise: [{ label: "À propos" }, { label: "Partenaires" }],
+  Entreprise: [
+    { label: "À propos", href: "/a-propos" },
+    {
+      label: "Devenir partenaire",
+      href: "mailto:ngassakialex20@gmail.com?subject=Demande%20de%20partenariat%20avec%20MIRA",
+    },
+  ],
   Support: [
-    { label: "Centre d'aide" },
+    { label: "Centre d'aide", href: "/policies" },
     { label: "Nous contacter", href: "mailto:ngassakialex20@gmail.com" },
     {
       label: "Politique de confidentialité",
-      href: `${APP_URL}/logements/menu/confidentialite`,
+      href: "/policies/confidentialite",
     },
-    { label: "CGU" },
+    { label: "CGU", href: "/policies/utilisation" },
+    { label: "Remboursement & litiges", href: "/policies/remboursement" },
+    { label: "Politique de sécurité", href: "/policies/security" },
   ],
   Villes: [{ label: "Brazzaville" }, { label: "Pointe-Noire" }],
 };
@@ -26,6 +34,9 @@ const reseaux = {
   TikTok: "https://www.tiktok.com/@mira.site.cg",
   Instagram: "https://www.instagram.com/mira.site.cg",
 };
+
+const footerLinkClass =
+  "press inline-block text-dark-400 hover:text-dark-50 text-sm font-body transition-colors duration-200";
 
 export default function Footer() {
   return (
@@ -41,7 +52,7 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-4">
               <Image src="/logo.png" alt="" width={60} height={60} />
-              <a href="#hero" aria-label="MIRA, retour en haut de page" className="press">
+              <Link href="/" aria-label="MIRA, retour à l'accueil" className="press">
                 <Image
                   src="/name.png"
                   alt=""
@@ -49,7 +60,7 @@ export default function Footer() {
                   height={86}
                   className="theme-invert"
                 />
-              </a>
+              </Link>
             </div>
             <p className="text-dark-400 text-sm font-body leading-relaxed mb-6">
               La plateforme de location immobilière adaptée aux réalités
@@ -86,12 +97,15 @@ export default function Footer() {
                 {links.map(({ label, href }) => (
                   <li key={label}>
                     {href ? (
-                      <a
-                        href={href}
-                        className="press inline-block text-dark-400 hover:text-dark-50 text-sm font-body transition-colors duration-200"
-                      >
-                        {label}
-                      </a>
+                      href.startsWith("/") ? (
+                        <Link href={href} className={footerLinkClass}>
+                          {label}
+                        </Link>
+                      ) : (
+                        <a href={href} className={footerLinkClass}>
+                          {label}
+                        </a>
+                      )
                     ) : (
                       <p className="text-dark-400 text-sm font-body">{label}</p>
                     )}

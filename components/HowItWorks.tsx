@@ -1,48 +1,52 @@
-'use client'
+"use client";
 
-import { useReveal } from '@/hooks/useReveal'
-import { Search, Calendar, CreditCard, KeyRound } from 'lucide-react'
+import { useReveal } from "@/hooks/useReveal";
+import { Search, Calendar, CreditCard, KeyRound } from "lucide-react";
 
 const steps = [
   {
-    number: '01',
+    number: "01",
     icon: Search,
-    title: 'Cherchez votre logement',
+    title: "Cherchez votre logement",
     description:
-      'Parcourez des centaines de logements vérifiés à Brazzaville et partout au Congo. Filtrez par prix, quartier, type de logement et équipements.',
-    detail: 'Disponible sur iOS & Android',
+      "Parcourez des centaines de logements vérifiés à Brazzaville et partout au Congo. Filtrez par prix, quartier, type de logement et équipements.",
+    detail: "Disponible partout",
   },
   {
-    number: '02',
+    number: "02",
     icon: Calendar,
-    title: 'Choisissez vos dates',
+    title: "Choisissez vos dates",
     description:
-      'Sélectionnez vos dates d\'arrivée et de départ. Vérifiez la disponibilité en temps réel et consultez les avis d\'autres locataires.',
-    detail: 'Calendrier en temps réel',
+      "Sélectionnez vos dates d'arrivée et de départ. Vérifiez la disponibilité en temps réel et consultez les avis d'autres locataires.",
+    detail: "Calendrier en temps réel",
   },
   {
-    number: '03',
+    number: "03",
     icon: CreditCard,
-    title: 'Payez via Mobile Money',
+    title: "Payez via Mobile Money",
     description:
-      'Réglez en toute sécurité avec MTN Mobile Money ou Airtel Money. Votre paiement est protégé jusqu\'à votre arrivée dans le logement.',
-    detail: 'MTN & Airtel acceptés',
+      "Réglez en toute sécurité avec MTN Mobile Money ou Airtel Money. Votre paiement est protégé jusqu'à votre arrivée dans le logement.",
+    detail: "MTN & Airtel acceptés",
   },
   {
-    number: '04',
+    number: "04",
     icon: KeyRound,
-    title: 'Profitez de votre séjour',
+    title: "Profitez de votre séjour",
     description:
-      'Recevez la confirmation et les clés d\'accès numériques. Communiquez avec le propriétaire via notre messagerie intégrée.',
-    detail: 'Check-in sans contact',
+      "Recevez la confirmation et les clés d'accès numériques. Communiquez avec le propriétaire via notre messagerie intégrée.",
+    detail: "Check-in sans contact",
   },
-]
+];
 
 export default function HowItWorks() {
-  const sectionRef = useReveal()
+  const sectionRef = useReveal();
 
   return (
-    <section id="how-it-works" ref={sectionRef as React.RefObject<HTMLElement>} className="relative py-32 overflow-hidden">
+    <section
+      id="how-it-works"
+      ref={sectionRef as React.RefObject<HTMLElement>}
+      className="relative py-32 overflow-hidden"
+    >
       {/* BG */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-[#0a1320] blur-[150px]" />
@@ -52,7 +56,9 @@ export default function HowItWorks() {
         {/* Header */}
         <div className="text-center mb-20 reveal">
           <div className="inline-flex items-center gap-2 glass-warm rounded-full px-4 py-1.5 mb-6">
-            <span className="text-[#122f55] text-xs font-mono tracking-widest uppercase">Comment ça marche</span>
+            <span className="text-[#122f55] text-xs font-mono tracking-widest uppercase">
+              Comment ça marche
+            </span>
           </div>
           <h2 className="font-display text-5xl lg:text-6xl font-light text-white mb-6 leading-tight">
             Simple comme
@@ -81,7 +87,7 @@ export default function HowItWorks() {
 
           <div className="grid lg:grid-cols-4 gap-8">
             {steps.map((step, i) => {
-              const Icon = step.icon
+              const Icon = step.icon;
               return (
                 <div
                   key={step.number}
@@ -109,14 +115,16 @@ export default function HowItWorks() {
                   {/* Detail badge */}
                   <div className="inline-flex items-center gap-2 bg-white/3 border border-white/8 rounded-full px-3 py-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#00E5FF]" />
-                    <span className="text-xs text-dark-300 font-mono">{step.detail}</span>
+                    <span className="text-xs text-dark-300 font-mono">
+                      {step.detail}
+                    </span>
                   </div>
                 </div>
-              )
+              );
             })}
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

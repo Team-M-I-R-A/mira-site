@@ -105,21 +105,43 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Right — App screenshot */}
+        {/* Right — Mockups iOS + Android */}
         <div
-          className="flex justify-end animate-fade-in opacity-0 stagger-3"
+          className="flex justify-center animate-fade-in opacity-0 stagger-3 lg:justify-end"
           style={{ animationFillMode: "forwards" }}
         >
-          <div className="w-full max-w-[250px] overflow-hidden rounded-[28px] shadow-md">
-            <Image
-              src="/screenshots/mockups_home.png"
-              alt="Écran d’accueil de l’application MIRA : appartements meublés à Brazzaville et Pointe-Noire, avec leur prix en FCFA"
-              width={591}
-              height={1280}
-              sizes="280px"
-              preload
-              className="block h-auto w-full"
+          <div className="relative mx-auto aspect-[11/14] w-full max-w-[300px] sm:max-w-[360px] lg:max-w-[420px]">
+            {/* Halo lumineux derrière les téléphones */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-x-[8%] bottom-[6%] top-[18%] rounded-[50%] bg-[#1A6BFF]/20 blur-[2px]"
             />
+
+            {/* Android — derrière */}
+            <div className="absolute left-0 top-[6%] z-0 w-[55%] -rotate-6 shadow-xs">
+              <Image
+                src="/screenshots/mockups_home_android.png"
+                alt="Écran d’accueil de l’application MIRA sur Android : appartements meublés à Brazzaville et Pointe-Noire, avec leur prix en FCFA"
+                width={1392}
+                height={3025}
+                sizes="(min-width: 1024px) 235px, 55vw"
+                loading="eager"
+                className="block h-auto w-full"
+              />
+            </div>
+
+            {/* iOS — devant */}
+            <div className="absolute right-0 top-[2%] z-10 w-[59%] rotate-3 shadow-xs">
+              <Image
+                src="/screenshots/mockups_home.png"
+                alt="Écran d’accueil de l’application MIRA sur iPhone : appartements meublés à Brazzaville et Pointe-Noire, avec leur prix en FCFA"
+                width={861}
+                height={1784}
+                sizes="(min-width: 1024px) 250px, 59vw"
+                preload
+                className="block h-auto w-full"
+              />
+            </div>
           </div>
         </div>
       </div>

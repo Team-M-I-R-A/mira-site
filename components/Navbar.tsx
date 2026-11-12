@@ -3,13 +3,15 @@
 import { useState, useEffect, useRef } from "react";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { APP_URL } from "@/lib/config";
 
 const navLinks = [
-  { label: "Comment ça marche", href: "#how-it-works" },
-  { label: "Mobile Money", href: "#payment" },
-  { label: "Propriétaires", href: "#publier" },
-  { label: "Installer", href: "#installer" },
+  { label: "Comment ça marche", hash: "#how-it-works" },
+  { label: "Mobile Money", hash: "#payment" },
+  { label: "Propriétaires", hash: "#publier" },
+  { label: "Installer", hash: "#installer" },
 ];
 
 export default function Navbar() {
@@ -17,6 +19,8 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [activeHref, setActiveHref] = useState<string | null>(null);
   const navRef = useRef<HTMLElement>(null);
+  const pathname = usePathname();
+  const isHome = pathname === "/";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -26,6 +30,11 @@ export default function Navbar() {
 
   // Indique la section en cours de lecture
   useEffect(() => {
+    if (!isHome) {
+      setActiveHref(null);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach(({ isIntersecting, target }) => {
@@ -37,12 +46,12 @@ export default function Navbar() {
       },
       { rootMargin: "-45% 0px -54% 0px" },
     );
-    navLinks.forEach(({ href }) => {
-      const section = document.querySelector(href);
+    navLinks.forEach(({ hash }) => {
+      const section = document.querySelector(hash);
       if (section) observer.observe(section);
     });
     return () => observer.disconnect();
-  }, []);
+  }, [isHome]);
 
   // Ferme le menu si on clique en dehors de la nav
   useEffect(() => {
@@ -73,9 +82,9 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
-        <a
-          href="#hero"
-          aria-label="MIRA, retour en haut de page"
+        <Link
+          href="/"
+          aria-label="MIRA, retour à l'accueil"
           className="press flex items-center gap-3"
         >
           <Image src="/logo.png" alt="" width={48} height={48} />
@@ -86,27 +95,32 @@ export default function Navbar() {
             height={86}
             className="theme-invert"
           />
-        </a>
+        </Link>
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              aria-current={activeHref === link.href ? "location" : undefined}
-              className={`press relative group text-sm font-body font-medium transition-colors duration-200 hover:text-dark-50 ${
-                activeHref === link.href ? "text-dark-50" : "text-dark-300"
-              }`}
-            >
-              {link.label}
-              <span
-                className={`absolute -bottom-1 left-0 h-px w-full origin-left bg-[#00798f] transition-transform duration-300 group-hover:scale-x-100 ${
-                  activeHref === link.href ? "scale-x-100" : "scale-x-0"
+          {navLinks.map((link) => {
+            const href = isHome ? link.hash : `/${link.hash}`;
+            const active = activeHref === link.hash;
+
+            return (
+              <Link
+                key={link.hash}
+                href={href}
+                aria-current={active ? "location" : undefined}
+                className={`press relative group text-sm font-body font-medium transition-colors duration-200 hover:text-dark-50 ${
+                  active ? "text-dark-50" : "text-dark-300"
                 }`}
-              />
-            </a>
-          ))}
+              >
+                {link.label}
+                <span
+                  className={`absolute -bottom-1 left-0 h-px w-full origin-left bg-[#00798f] transition-transform duration-300 group-hover:scale-x-100 ${
+                    active ? "scale-x-100" : "scale-x-0"
+                  }`}
+                />
+              </Link>
+            );
+          })}
         </div>
 
         <div className="flex items-center gap-3">
@@ -157,17 +171,22 @@ export default function Navbar() {
         }}
       >
         <div className="px-6 pb-6 pt-2 space-y-4 border-t border-white/5 mt-3">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              aria-current={activeHref === link.href ? "location" : undefined}
-              className="press block text-dark-200 text-sm font-medium py-2 transition-colors"
-              onClick={() => setOpen(false)}
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) => {
+            const href = isHome ? link.hash : `/${link.hash}`;
+            const active = activeHref === link.hash;
+
+            return (
+              <Link
+                key={link.hash}
+                href={href}
+                aria-current={active ? "location" : undefined}
+                className="press block text-dark-200 text-sm font-medium py-2 transition-colors"
+                onClick={() => setOpen(false)}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
           <a
             href={APP_URL}
             className="press block w-full text-center px-5 py-3 rounded-xl bg-gradient-to-r from-[#2233DD] to-[#1A6BFF] text-white text-sm font-medium mt-2"
