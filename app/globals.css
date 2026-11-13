@@ -1011,3 +1011,124 @@ h2.font-display {
     border-color: rgba(13, 11, 8, 0.5);
   }
 }
+
+/* ===== NAV DROPDOWN (menu Support) ===== */
+.nav-dropdown {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: 50%;
+  z-index: 60;
+  width: 284px;
+  padding: 8px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(13, 11, 8, 0.08);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  box-shadow:
+    0 20px 50px rgba(13, 11, 8, 0.16),
+    0 4px 14px rgba(13, 11, 8, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, -8px) scale(0.96);
+  transform-origin: top center;
+  /* Transition (et non keyframes) : l'animation repart de la position courante
+     si on la survole à nouveau avant la fin de la fermeture. */
+  transition:
+    opacity 170ms var(--ease-out),
+    transform 210ms var(--ease-out),
+    visibility 0s linear 210ms;
+}
+
+/* Pont invisible au-dessus du panneau : la souris peut rejoindre le menu
+   sans traverser un espace vide. */
+.nav-dropdown::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -16px;
+  height: 16px;
+}
+
+.nav-dropdown[data-open='true'] {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, 0) scale(1);
+  transition:
+    opacity 170ms var(--ease-out),
+    transform 210ms var(--ease-out),
+    visibility 0s;
+}
+
+.nav-dropdown-item {
+  opacity: 0;
+  transform: translateY(-5px);
+  transition:
+    opacity 140ms ease,
+    transform 180ms var(--ease-out),
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+/* Apparition en cascade, comme les menus déroulants de WhatsApp */
+.nav-dropdown[data-open='true'] .nav-dropdown-item {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay:
+    calc(var(--i, 0) * 18ms + 20ms),
+    calc(var(--i, 0) * 18ms + 20ms),
+    0ms,
+    0ms;
+}
+
+.mobile-support-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 280ms var(--ease-out),
+    opacity 180ms ease;
+}
+
+.mobile-support-panel > div {
+  overflow: hidden;
+}
+
+.mobile-support-panel[data-open='true'] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-dropdown,
+  .nav-dropdown-item,
+  .mobile-support-panel {
+    transition: none !important;
+  }
+  .nav-dropdown {
+    transform: translate(-50%, 0);
+  }
+  .nav-dropdown-item {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .nav-dropdown {
+    background: #fff;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .nav-dropdown {
+    background: #fff;
+    border-color: rgba(13, 11, 8, 0.5);
+  }
+}

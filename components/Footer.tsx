@@ -1,6 +1,7 @@
 import { MapPin, Mail, Phone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { supportLinks } from "@/lib/navigation";
 import { socialIcons } from "./SocialIcons";
 
 const footerLinks: Record<string, { label: string; href?: string }[]> = {
@@ -16,17 +17,7 @@ const footerLinks: Record<string, { label: string; href?: string }[]> = {
       href: "mailto:ngassakialex20@gmail.com?subject=Demande%20de%20partenariat%20avec%20MIRA",
     },
   ],
-  Support: [
-    { label: "Centre d'aide", href: "/policies" },
-    { label: "Nous contacter", href: "mailto:ngassakialex20@gmail.com" },
-    {
-      label: "Politique de confidentialité",
-      href: "/policies/confidentialite",
-    },
-    { label: "CGU", href: "/policies/utilisation" },
-    { label: "Remboursement & litiges", href: "/policies/remboursement" },
-    { label: "Politique de sécurité", href: "/policies/security" },
-  ],
+  Support: supportLinks,
   Villes: [{ label: "Brazzaville" }, { label: "Pointe-Noire" }],
 };
 
@@ -52,7 +43,11 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-4">
               <Image src="/logo.png" alt="" width={60} height={60} />
-              <Link href="/" aria-label="MIRA, retour à l'accueil" className="press">
+              <Link
+                href="/"
+                aria-label="MIRA, retour à l'accueil"
+                className="press"
+              >
                 <Image
                   src="/name.png"
                   alt=""
@@ -118,9 +113,17 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-white/5 gap-4">
-          <p className="text-dark-400 text-xs font-body text-center md:text-left">
-            © {new Date().getFullYear()} M I R A. Tous droits réservés.
-          </p>
+          <div className="flex gap-2 justify-between">
+            <p className="text-dark-400 text-xs font-body text-center md:text-left">
+              © {new Date().getFullYear()} M I R A. Tous droits réservés
+            </p>
+            <p className="text-dark-400 text-xs font-body text-center md:text-left">
+              |
+            </p>
+            <p className="text-dark-400 text-xs font-body text-center md:text-left">
+              RCCM: CG-BZV-01-2026-A-10-02308
+            </p>
+          </div>
 
           <div className="flex items-center gap-10">
             {Object.entries(reseaux).map(([social, link]) => {
