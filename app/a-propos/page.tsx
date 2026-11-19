@@ -95,7 +95,7 @@ export default function AboutPage() {
                 <ArrowRight size={16} aria-hidden="true" />
               </a>
               <a
-                href="mailto:ngassakialex20@gmail.com"
+                href="mailto:contact@mira.cg"
                 className="press inline-flex min-h-[48px] items-center justify-center gap-2 rounded-xl border border-white/10 px-6 py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-dark-900"
               >
                 Nous contacter

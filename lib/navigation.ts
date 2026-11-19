@@ -9,7 +9,7 @@ export type SupportLink = {
  */
 export const supportLinks: SupportLink[] = [
   { label: "Centre d'aide", href: "/policies" },
-  { label: "Nous contacter", href: "mailto:ngassakialex20@gmail.com" },
+  { label: "Nous contacter", href: "mailto:contact@mira.cg" },
   {
     label: "Politique de confidentialité",
     href: "/policies/confidentialite",

@@ -8,31 +8,27 @@ type Step = {
   title: string;
   src: string;
   alt: string;
+  width: number;
+  height: number;
 };
 
 type StepShowcaseProps = {
   steps: Step[];
-  withFrame?: boolean;
 };
 
 function PhoneFrame({
   steps,
   active,
-  withFrame = true,
   className = "",
 }: {
   steps: Step[];
   active: number;
-  withFrame?: boolean;
   className?: string;
 }) {
   return (
     <div
-      className={`relative w-full ${
-        withFrame
-          ? "aspect-[1080/2340] overflow-hidden rounded-[2rem] border border-white/10 bg-dark-900 shadow-xl shadow-black/10"
-          : "aspect-[1463/3031]"
-      } ${className}`}
+      className={`relative w-full ${className}`}
+      style={{ aspectRatio: `${steps[0].width} / ${steps[0].height}` }}
     >
       {steps.map((step, index) => (
         <Image
@@ -56,10 +52,7 @@ function PhoneFrame({
 const navButton =
   "flex h-11 w-11 shrink-0 touch-manipulation items-center justify-center rounded-full border border-[#00798f]/40 text-[#00798f] transition-colors duration-200 hover:bg-[#00798f]/10 disabled:opacity-30 disabled:hover:bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00798f]";
 
-export default function StepShowcase({
-  steps,
-  withFrame = true,
-}: StepShowcaseProps) {
+export default function StepShowcase({ steps }: StepShowcaseProps) {
   const [active, setActive] = useState(0);
   const stepRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -157,12 +150,7 @@ export default function StepShowcase({
           })}
         </div>
 
-        <PhoneFrame
-          steps={steps}
-          active={active}
-          withFrame={withFrame}
-          className="install-phone"
-        />
+        <PhoneFrame steps={steps} active={active} className="install-phone" />
       </div>
 
       {/* Mobile : carrousel avec aperçu de l'étape suivante, compteur, flèches et points */}
@@ -180,11 +168,10 @@ export default function StepShowcase({
               }`}
             >
               <div
-                className={`relative w-full ${
-                  withFrame
-                    ? "aspect-[1080/2340] overflow-hidden rounded-[1.75rem] border border-white/10 bg-dark-900 shadow-xl shadow-black/10"
-                    : "aspect-[1463/3031]"
-                }`}
+                className="relative w-full"
+                style={{
+                  aspectRatio: `${steps[0].width} / ${steps[0].height}`,
+                }}
               >
                 <Image
                   src={step.src}

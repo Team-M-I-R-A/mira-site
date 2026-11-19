@@ -45,7 +45,7 @@ const POLICY_DIGEST = `### Réservation et paiement
 - En cas d'incident de sécurité : mesures correctives, information des utilisateurs concernés si nécessaire.
 
 ### Contact
-- E-mail : ngassakialex20@gmail.com — Téléphone : +242 06 767 66 43 — Centre d'aide : /policies.`;
+- E-mail : contact@mira.cg — Téléphone : +242 06 767 66 43 — Centre d'aide : /policies.`;
 
 /**
  * Contexte injecté dans le prompt : synthèse + documents complets pertinents.

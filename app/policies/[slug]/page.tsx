@@ -227,7 +227,7 @@ export default async function PolicyPage({ params }: PolicyPageProps) {
               </div>
             </div>
             <a
-              href="mailto:ngassakialex20@gmail.com"
+              href="mailto:contact@mira.cg"
               className="press inline-flex min-h-[44px] shrink-0 items-center justify-center gap-2 rounded-xl border border-white/10 px-5 py-2.5 font-body text-sm font-medium text-white transition-colors duration-200 hover:bg-dark-900"
             >
               Contacter le support

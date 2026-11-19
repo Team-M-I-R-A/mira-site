@@ -11,24 +11,32 @@ type Step = {
   title: string;
   src: string;
   alt: string;
+  width: number;
+  height: number;
 };
 
 const androidSteps: Step[] = [
   {
     title: "Ouvrez MIRA dans Chrome.",
-    src: "/install/android-1.png",
+    src: "/screenshots/step1_android.png",
     alt: "Étape 1 sur Android : MIRA ouverte dans Google Chrome",
+    width: 1522,
+    height: 3208,
   },
   {
     title: "Touchez le menu (⋮).",
-    src: "/install/android-2.png",
+    src: "/screenshots/step2_android.png",
     alt: "Étape 2 sur Android : menu de Google Chrome ouvert",
+    width: 1522,
+    height: 3208,
   },
   {
     title:
       "Choisissez « Installer l’application » (ou « Ajouter à l’écran d’accueil ») puis confirmez.",
-    src: "/install/android-3.png",
+    src: "/screenshots/step3_android.png",
     alt: "Étape 3 sur Android : option Installer l’application dans Chrome",
+    width: 1522,
+    height: 3208,
   },
 ];
 
@@ -37,16 +45,22 @@ const iosSteps: Step[] = [
     title: "Ouvrez MIRA dans Safari.",
     src: "/screenshots/step2.png",
     alt: "Étape 1 sur iPhone : MIRA ouverte dans Safari",
+    width: 1463,
+    height: 3031,
   },
   {
     title: "Touchez le bouton Partager.",
     src: "/screenshots/step1.png",
     alt: "Étape 2 sur iPhone : bouton Partager de Safari",
+    width: 1463,
+    height: 3031,
   },
   {
     title: "Choisissez « Sur l’écran d’accueil » puis « Ajouter ».",
     src: "/screenshots/step3.png",
     alt: "Étape 3 sur iPhone : option Sur l’écran d’accueil dans le menu Partager",
+    width: 1463,
+    height: 3031,
   },
 ];
 
@@ -86,7 +100,7 @@ function AndroidTutorial() {
 function IosTutorial() {
   return (
     <div>
-      <StepShowcase steps={iosSteps} withFrame={false} />
+      <StepShowcase steps={iosSteps} />
       <div className="mt-14 flex flex-col items-center gap-6 text-center">
         <p className="text-pretty text-sm text-dark-400">
           Sur iPhone, l’installation se fait uniquement depuis Safari.

@@ -14,7 +14,7 @@ const footerLinks: Record<string, { label: string; href?: string }[]> = {
     { label: "À propos", href: "/a-propos" },
     {
       label: "Devenir partenaire",
-      href: "mailto:ngassakialex20@gmail.com?subject=Demande%20de%20partenariat%20avec%20MIRA",
+      href: "mailto:contact@mira.cg?subject=Demande%20de%20partenariat%20avec%20MIRA",
     },
   ],
   Support: supportLinks,
@@ -69,10 +69,10 @@ export default function Footer() {
               <div className="flex items-center gap-2 text-dark-400 text-xs">
                 <Mail size={12} />
                 <a
-                  href="mailto:ngassakialex20@gmail.com"
+                  href="mailto:contact@mira.cg"
                   className="press inline-block hover:text-[#00E5FF] transition-colors"
                 >
-                  ngassakialex20@gmail.com
+                  contact@mira.cg
                 </a>
               </div>
               <div className="flex items-center gap-2 text-dark-400 text-xs">

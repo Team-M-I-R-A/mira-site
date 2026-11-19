@@ -101,7 +101,7 @@ export default function PoliciesPage() {
           </div>
         </div>
         <a
-          href="mailto:ngassakialex20@gmail.com"
+          href="mailto:contact@mira.cg"
           className="press inline-flex min-h-[44px] shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#2233DD] to-[#1A6BFF] px-5 py-2.5 text-sm font-medium text-white transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-glow"
         >
           Nous contacter

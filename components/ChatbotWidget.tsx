@@ -384,8 +384,8 @@ const LOCAL_REPLIES: FaqIntent[] = [
       'assistance',
     ],
     content:
-      "Vous pouvez joindre l'équipe MIRA par e-mail à ngassakialex20@gmail.com ou par téléphone au +242 06 767 66 43. Le centre d'aide et toutes les politiques sont aussi disponibles sur /policies. 📩",
-    href: 'mailto:ngassakialex20@gmail.com',
+      "Vous pouvez joindre l'équipe MIRA par e-mail à contact@mira.cg ou par téléphone au +242 06 767 66 43. Le centre d'aide et toutes les politiques sont aussi disponibles sur /policies. 📩",
+    href: 'mailto:contact@mira.cg',
     linkLabel: 'Nous écrire',
   },
   {
@@ -418,7 +418,7 @@ const LOCAL_REPLIES: FaqIntent[] = [
     ],
     keywords: ['droits', 'rectification', 'opposition', 'suppression'],
     content:
-      "Vous pouvez demander l'accès à vos données, leur rectification, leur suppression, la limitation d'un traitement ou vous y opposer. Écrivez à ngassakialex20@gmail.com : une réponse est généralement apportée sous 30 jours, et une preuve d'identité peut être demandée pour les demandes sensibles. 📩",
+      "Vous pouvez demander l'accès à vos données, leur rectification, leur suppression, la limitation d'un traitement ou vous y opposer. Écrivez à contact@mira.cg : une réponse est généralement apportée sous 30 jours, et une preuve d'identité peut être demandée pour les demandes sensibles. 📩",
     href: '/policies/vos-droits',
     linkLabel: 'Lire vos droits',
   },
@@ -494,8 +494,8 @@ const LOCAL_REPLIES: FaqIntent[] = [
     ],
     keywords: ['partenaire', 'partenariat', 'partenaires', 'agence'],
     content:
-      "Vous êtes une agence, un propriétaire multi-biens ou une entreprise ? Écrivez à ngassakialex20@gmail.com avec l'objet « Partenariat avec MIRA » et décrivez votre projet. 🤝",
-    href: 'mailto:ngassakialex20@gmail.com?subject=Demande%20de%20partenariat%20avec%20MIRA',
+      "Vous êtes une agence, un propriétaire multi-biens ou une entreprise ? Écrivez à contact@mira.cg avec l'objet « Partenariat avec MIRA » et décrivez votre projet. 🤝",
+    href: 'mailto:contact@mira.cg?subject=Demande%20de%20partenariat%20avec%20MIRA',
     linkLabel: 'Nous écrire',
   },
 ]
